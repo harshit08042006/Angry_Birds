@@ -58,14 +58,14 @@ public class LevelScreen implements Screen {
 
         if(touchPosition.x>LEVEL1_BUTTON_xCOORDINATE&&touchPosition.x<LEVEL1_BUTTON_xCOORDINATE+LEVEL1_BUTTON_WIDTH&&touchPosition.y>LEVEL1_BUTTON_yCOORDINATE&&touchPosition.y<LEVEL1_BUTTON_yCOORDINATE+LEVEL1_BUTTON_HEIGHT){
            if(Gdx.input.justTouched()) {
-               this.dispose();
+               angryBird.setScreen(new LoseScreen(angryBird));
             }
         }
 
 
         if(touchPosition.x>LEVEL2_BUTTON_xCOORDINATE&&touchPosition.x<LEVEL2_BUTTON_xCOORDINATE+LEVEL2_BUTTON_WIDTH&&touchPosition.y>LEVEL2_BUTTON_yCOORDINATE&&touchPosition.y<LEVEL2_BUTTON_yCOORDINATE+LEVEL2_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-                this.dispose();
+                angryBird.setScreen(new WinScreen(angryBird));
             }
         }
 
