@@ -42,14 +42,13 @@ public class LevelScreen implements Screen {
         batch=new SpriteBatch();
         viewport=new FitViewport(8, 5);
         touchPosition=new Vector2();
-        Background=new Texture("");
-        Level1_Button=new Texture("");
-        Level2_Button=new Texture("");
-        Level3_Button=new Texture("")
+        Background=new Texture("level_Screen_Background.jpg");
+        Level1_Button=new Texture("level1_button.png");
+        Level2_Button=new Texture("level2_button.png");
+        Level3_Button=new Texture("level3_button.png");
     }
     @Override
     public void show(){
-
     }
 
     @Override

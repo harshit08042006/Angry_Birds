@@ -58,7 +58,7 @@ public class FirstScreen implements Screen {
         }
         if(touchPosition.x>PLAY_BUTTON_X_COORDINATE&&touchPosition.x<PLAY_BUTTON_X_COORDINATE+PLAY_BUTTON_WIDTH&&touchPosition.y>PLAY_BUTTON_Y_COORDINATE&&touchPosition.y<PLAY_BUTTON_Y_COORDINATE+PLAY_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-                this.dispose();
+                angryBird.setScreen(new New_Load_GameScreen(angryBird));
                 //angryBird.setScreen();
             }
         }

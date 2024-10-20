@@ -41,10 +41,10 @@ public class Save_Exit_Screen implements Screen {
         batch=new SpriteBatch();
         viewport=new FitViewport(8, 5);
         touchPosition=new Vector2();
-        Background=new Texture("");
-        Save_Button=new Texture("");
-        Exit_Button=new Texture("");
-        Home_Button = new Texture("");
+        Background=new Texture("level_Screen_Background.jpg");
+        Save_Button=new Texture("save_button.jpg");
+        Exit_Button=new Texture("exit_button.jpg");
+        Home_Button = new Texture("home_button.jpg");
     }
     @Override
     public void show(){
@@ -62,13 +62,13 @@ public class Save_Exit_Screen implements Screen {
         }
 
 
-        if(touchPosition.x>EXIT_BUTTON_yCOORDINATE &&touchPosition.x<EXIT_BUTTON_xCOORDINATE+EXIT_BUTTON_WIDTH&&touchPosition.y>EXIT_BUTTON_yCOORDINATE&&touchPosition.y<EXIT_BUTTON_yCOORDINATE+EXIT_BUTTON_HEIGHT){
+        if(touchPosition.x>EXIT_BUTTON_xCOORDINATE &&touchPosition.x<EXIT_BUTTON_xCOORDINATE+EXIT_BUTTON_WIDTH&&touchPosition.y>EXIT_BUTTON_yCOORDINATE&&touchPosition.y<EXIT_BUTTON_yCOORDINATE+EXIT_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
                 Gdx.app.exit();
             }
         }
 
-        if(touchPosition.x>HOME_BUTTON_yCOORDINATE &&touchPosition.x<HOME_BUTTON_xCOORDINATE+HOME_BUTTON_WIDTH&&touchPosition.y>HOME_BUTTON_yCOORDINATE&&touchPosition.y<HOME_BUTTON_yCOORDINATE+HOME_BUTTON_HEIGHT){
+        if(touchPosition.x>HOME_BUTTON_xCOORDINATE &&touchPosition.x<HOME_BUTTON_xCOORDINATE+HOME_BUTTON_WIDTH&&touchPosition.y>HOME_BUTTON_yCOORDINATE&&touchPosition.y<HOME_BUTTON_yCOORDINATE+HOME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
                 this.dispose();
             }
