@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import static com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color;
 
@@ -32,9 +33,8 @@ public class FirstScreen implements Screen {
     private static final float EXIT_BUTTON_Y_COORDINATE=0.5f;
     public FirstScreen(Main angryBird) {
         this.angryBird=angryBird;
-        viewport = new FitViewport(800, 600, new OrthographicCamera());
         batch=new SpriteBatch();
-        viewport=new FitViewport(8, 5);
+        viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
         backGround=new Texture("angryBirdBackground.png");
         playButton=new Texture("playButton.png");
