@@ -23,12 +23,12 @@ public class FirstScreen implements Screen {
     private FitViewport viewport;
     private SpriteBatch batch;
     private Vector2 touchPosition;
-    private static final float PLAY_BUTTON_WIDTH=2;
-    private static final float EXIT_BUTTON_WIDTH=2;
-    private static final float PLAY_BUTTON_HEIGHT=1;
-    private static final float EXIT_BUTTON_HEIGHT=1;
-    private static final float PLAY_BUTTON_X_COORDINATE=5;
-    private static final float EXIT_BUTTON_X_COORDINATE=1;
+    private static final float PLAY_BUTTON_WIDTH=3;
+    private static final float EXIT_BUTTON_WIDTH=3;
+    private static final float PLAY_BUTTON_HEIGHT=2;
+    private static final float EXIT_BUTTON_HEIGHT=2;
+    private static final float PLAY_BUTTON_X_COORDINATE=4.5f;
+    private static final float EXIT_BUTTON_X_COORDINATE=8;
     private static final float PLAY_BUTTON_Y_COORDINATE=0.5f;
     private static final float EXIT_BUTTON_Y_COORDINATE=0.5f;
     public FirstScreen(Main angryBird) {
@@ -37,8 +37,8 @@ public class FirstScreen implements Screen {
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
         backGround=new Texture("angryBirdBackground.png");
-        playButton=new Texture("playButton.png");
-        exitButton=new Texture("exitButton.png");
+        playButton=new Texture("play_blue (1).png");
+        exitButton=new Texture("exit_yellow (1).png");
     }
     @Override
     public void show() {

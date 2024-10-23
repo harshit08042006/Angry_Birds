@@ -22,18 +22,18 @@ public class New_Load_GameScreen implements Screen {
     private final SpriteBatch batch;
     private final Vector2 touchPosition;
 
-    private static final float NEW_GAME_BUTTON_WIDTH=1;
-    private static final float LOAD_GAME_BUTTON_WIDTH=1;
-    private static final float EXIT_GAME_BUTTON_WIDTH=1;
-    private static final float NEW_GAME_BUTTON_HEIGHT=1;
-    private static final float LOAD_GAME_BUTTON_HEIGHT=1;
-    private static final float EXIT_GAME_BUTTON_HEIGHT = 1;
-    private static final float NEW_GAME_BUTTON_xCOORDINATE = 1;
-    private static final float LOAD_GAME_BUTTON_xCOORDINATE = 3;
-    private static final float EXIT_GAME_BUTTON_xCOORDINATE = 5;
-    private static final float NEW_GAME_BUTTON_yCOORDINATE = 1;
-    private static final float LOAD_GAME_BUTTON_yCOORDINATE = 1;
-    private static final float EXIT_GAME_BUTTON_yCOORDINATE = 1;
+    private static final float NEW_GAME_BUTTON_WIDTH=2;
+    private static final float LOAD_GAME_BUTTON_WIDTH=2;
+    private static final float EXIT_GAME_BUTTON_WIDTH=2;
+    private static final float NEW_GAME_BUTTON_HEIGHT=2;
+    private static final float LOAD_GAME_BUTTON_HEIGHT=2;
+    private static final float EXIT_GAME_BUTTON_HEIGHT = 2;
+    private static final float NEW_GAME_BUTTON_xCOORDINATE = 3;
+    private static final float LOAD_GAME_BUTTON_xCOORDINATE = 3.05f;
+    private static final float EXIT_GAME_BUTTON_xCOORDINATE = 3;
+    private static final float NEW_GAME_BUTTON_yCOORDINATE = 2.5f;
+    private static final float LOAD_GAME_BUTTON_yCOORDINATE = 1.5f;
+    private static final float EXIT_GAME_BUTTON_yCOORDINATE = 0.5f;
 
     public New_Load_GameScreen(Main angryBird) {
         this.angryBird=angryBird;
@@ -42,9 +42,9 @@ public class New_Load_GameScreen implements Screen {
         viewport=new FitViewport(8, 5);
         touchPosition=new Vector2();
         Background=new Texture("level_Screen_Background.jpg");
-        New_Game_Button=new Texture("new_game_icon.jpg");
-        Load_Game_Button=new Texture("load_game_icon.jpg");
-        Exit_Game_Button = new Texture("exit_game_icon.jpg");
+        New_Game_Button=new Texture("new_game_blue (1).png");
+        Load_Game_Button=new Texture("load_blue (2) (1).png");
+        Exit_Game_Button = new Texture("exit_blue (1).png");
     }
     @Override
     public void show(){
