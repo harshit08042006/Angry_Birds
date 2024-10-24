@@ -27,7 +27,7 @@ public class LoseScreen implements Screen {
     public LoseScreen(Main angryBird) {
         this.angryBird=angryBird;
         batch=new SpriteBatch();
-        viewport=new FitViewport(8, 5);
+        viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
         backGround=new Texture("angryBirdCrying.jpg");
         replayButton=new Texture("replayButton.png");

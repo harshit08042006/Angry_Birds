@@ -37,9 +37,8 @@ public class Save_Exit_Screen implements Screen {
 
     public Save_Exit_Screen(Main angryBird) {
         this.angryBird=angryBird;
-        viewport = new FitViewport(800, 600, new OrthographicCamera());
         batch=new SpriteBatch();
-        viewport=new FitViewport(8, 5);
+        viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
         Background=new Texture("level_Screen_Background.jpg");
         Save_Button=new Texture("save_button.jpg");

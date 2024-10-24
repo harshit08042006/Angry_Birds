@@ -9,7 +9,7 @@ public class ChiefPig extends BasePig{
     public ChiefPig(int x, int y) {
         super(x, y);
     }
-    public void draw(SpriteBatch batch, int x, int y, int sizeX, int sizeY) {
+    public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {
         batch.draw(img,x,y,sizeX,sizeY);
     }
 }

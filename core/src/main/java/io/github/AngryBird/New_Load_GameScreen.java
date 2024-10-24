@@ -37,9 +37,8 @@ public class New_Load_GameScreen implements Screen {
 
     public New_Load_GameScreen(Main angryBird) {
         this.angryBird=angryBird;
-        viewport = new FitViewport(800, 600, new OrthographicCamera());
         batch=new SpriteBatch();
-        viewport=new FitViewport(8, 5);
+        viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
         Background=new Texture("level_Screen_Background.jpg");
         New_Game_Button=new Texture("new_game_blue (1).png");
