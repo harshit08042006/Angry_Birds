@@ -10,28 +10,28 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class WinScreen implements Screen {
     private Texture backGround;
-    private Texture replayButton;
+    private Texture homebutton;
     private Texture exitButton;
     private Main angryBird;
     private FitViewport viewport;
     private SpriteBatch batch;
     private Vector2 touchPosition;
-    private static final float REPLAY_BUTTON_WIDTH=2;
-    private static final float EXIT_BUTTON_WIDTH=2;
-    private static final float REPLAY_BUTTON_HEIGHT=1;
-    private static final float EXIT_BUTTON_HEIGHT=1;
-    private static final float REPLAY_BUTTON_X_COORDINATE=5;
-    private static final float EXIT_BUTTON_X_COORDINATE=1;
-    private static final float REPLAY_BUTTON_Y_COORDINATE=0.5f;
-    private static final float EXIT_BUTTON_Y_COORDINATE=0.5f;
+    private static final float HOME_BUTTON_WIDTH=5;
+    private static final float EXIT_BUTTON_WIDTH=5;
+    private static final float HOME_BUTTON_HEIGHT=2;
+    private static final float EXIT_BUTTON_HEIGHT=2.8f;
+    private static final float HOME_BUTTON_X_COORDINATE=3;
+    private static final float EXIT_BUTTON_X_COORDINATE=7;
+    private static final float HOME_BUTTON_Y_COORDINATE=0.5f;
+    private static final float EXIT_BUTTON_Y_COORDINATE=0.4f;
     public WinScreen(Main angryBird) {
         this.angryBird=angryBird;
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
         backGround=new Texture("angryBirdWinScreenBackground.jpg");
-        replayButton=new Texture("replayButton.png");
-        exitButton=new Texture("exitButton.png");
+        homebutton=new Texture("home (1).png");
+        exitButton=new Texture("exitNew_blue (1).png");
     }
     @Override
     public void show() {
@@ -49,7 +49,7 @@ public class WinScreen implements Screen {
                 Gdx.app.exit();
             }
         }
-        if(touchPosition.x>REPLAY_BUTTON_X_COORDINATE&&touchPosition.x<REPLAY_BUTTON_X_COORDINATE+REPLAY_BUTTON_WIDTH&&touchPosition.y>REPLAY_BUTTON_Y_COORDINATE&&touchPosition.y<REPLAY_BUTTON_Y_COORDINATE+REPLAY_BUTTON_HEIGHT){
+        if(touchPosition.x>HOME_BUTTON_X_COORDINATE&&touchPosition.x<HOME_BUTTON_X_COORDINATE+HOME_BUTTON_WIDTH&&touchPosition.y>HOME_BUTTON_Y_COORDINATE&&touchPosition.y<HOME_BUTTON_Y_COORDINATE+HOME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
                 this.dispose();
                 //angryBird.setScreen();
@@ -59,7 +59,7 @@ public class WinScreen implements Screen {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         batch.draw(backGround, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        batch.draw(replayButton, REPLAY_BUTTON_X_COORDINATE, REPLAY_BUTTON_Y_COORDINATE, REPLAY_BUTTON_WIDTH, REPLAY_BUTTON_HEIGHT);
+        batch.draw(homebutton, HOME_BUTTON_X_COORDINATE, HOME_BUTTON_Y_COORDINATE, HOME_BUTTON_WIDTH, HOME_BUTTON_HEIGHT);
         batch.draw(exitButton, EXIT_BUTTON_X_COORDINATE, EXIT_BUTTON_Y_COORDINATE, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
         batch.end();
     }

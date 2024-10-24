@@ -1,12 +1,15 @@
 package io.github.AngryBird;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GamePlayScreen implements Screen {
     private Texture background;
+    private Texture pause_button;
     private RedBird redBird;
     private BlackBird blackBird;
     private YellowBird yellowBird;
@@ -20,6 +23,7 @@ public class GamePlayScreen implements Screen {
     private Main angryBird;
     private SpriteBatch batch;
     private FitViewport viewport;
+    private final Vector2 touchPosition;
     public GamePlayScreen(Main angryBird) {
         this.angryBird=angryBird;
         batch = new SpriteBatch();
@@ -35,6 +39,8 @@ public class GamePlayScreen implements Screen {
         blueBlock = new BlueBlock();
         brownBlock = new BrownBlock();
         greyBlock = new GreyBlock();
+        pause_button = new Texture("pause_button_blue.png");
+        touchPosition = new Vector2();
     }
     @Override
     public void show() {
@@ -43,6 +49,14 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void render(float v) {
+        touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
+        viewport.unproject(touchPosition);
+
+        if(touchPosition.x>0.2f&&touchPosition.x<2.2f&&touchPosition.y>7&&touchPosition.y<9){
+            if(Gdx.input.justTouched()) {
+                angryBird.setScreen(new PauseScreen(angryBird));
+            }
+        }
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
@@ -62,6 +76,7 @@ public class GamePlayScreen implements Screen {
         greyBlock.draw(batch, 14, 2, 1, 1);
         brownBlock.draw(batch, 14, 3, 1, 1);
         pig.draw(batch, 14, 3.9f, 1, 1);
+        batch.draw(pause_button, 0.2f, 7, 2, 2);
         batch.end();
 
     }
