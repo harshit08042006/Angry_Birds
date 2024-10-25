@@ -17,19 +17,19 @@ public class LoseScreen implements Screen {
     private SpriteBatch batch;
     private Vector2 touchPosition;
     private static final float HOME_BUTTON_WIDTH=5;
-    private static final float EXIT_BUTTON_WIDTH=5;
+//    private static final float EXIT_BUTTON_WIDTH=5;
     private static final float HOME_BUTTON_HEIGHT=2;
-    private static final float EXIT_BUTTON_HEIGHT=2.8f;
-    private static final float HOME_BUTTON_X_COORDINATE=3;
-    private static final float EXIT_BUTTON_X_COORDINATE=7;
-    private static final float HOME_BUTTON_Y_COORDINATE=-0.4f;
-    private static final float EXIT_BUTTON_Y_COORDINATE=-0.5f;
+//    private static final float EXIT_BUTTON_HEIGHT=2.5f;
+    private static final float HOME_BUTTON_X_COORDINATE=5.6f;
+//    private static final float EXIT_BUTTON_X_COORDINATE=5.6f;
+    private static final float HOME_BUTTON_Y_COORDINATE=0.9f;
+//    private static final float EXIT_BUTTON_Y_COORDINATE=0;
     public LoseScreen(Main angryBird) {
         this.angryBird=angryBird;
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
-        backGround=new Texture("newlosescreen.jpg");
+        backGround=new Texture("angryBirdLoseBackground.png");
         homebutton=new Texture("home (1).png");
         exitButton=new Texture("exitNew_blue (1).png");
     }
@@ -43,12 +43,12 @@ public class LoseScreen implements Screen {
         // Draw your screen here. "delta" is the time since last render in seconds.
         touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(touchPosition);
-        if(touchPosition.x>EXIT_BUTTON_X_COORDINATE&&touchPosition.x<EXIT_BUTTON_X_COORDINATE+EXIT_BUTTON_WIDTH&&touchPosition.y>EXIT_BUTTON_Y_COORDINATE&&touchPosition.y<EXIT_BUTTON_Y_COORDINATE+EXIT_BUTTON_HEIGHT)
-        {
-            if(Gdx.input.justTouched()) {
-                Gdx.app.exit();
-            }
-        }
+//        if(touchPosition.x>EXIT_BUTTON_X_COORDINATE&&touchPosition.x<EXIT_BUTTON_X_COORDINATE+EXIT_BUTTON_WIDTH&&touchPosition.y>EXIT_BUTTON_Y_COORDINATE&&touchPosition.y<EXIT_BUTTON_Y_COORDINATE+EXIT_BUTTON_HEIGHT)
+//        {
+//            if(Gdx.input.justTouched()) {
+//                Gdx.app.exit();
+//            }
+//        }
         if(touchPosition.x>HOME_BUTTON_X_COORDINATE&&touchPosition.x<HOME_BUTTON_X_COORDINATE+HOME_BUTTON_WIDTH&&touchPosition.y>HOME_BUTTON_Y_COORDINATE&&touchPosition.y<HOME_BUTTON_Y_COORDINATE+HOME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
                 angryBird.setScreen(new New_Load_GameScreen(angryBird));
@@ -60,7 +60,7 @@ public class LoseScreen implements Screen {
         batch.begin();
         batch.draw(backGround, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         batch.draw(homebutton, HOME_BUTTON_X_COORDINATE, HOME_BUTTON_Y_COORDINATE, HOME_BUTTON_WIDTH, HOME_BUTTON_HEIGHT);
-        batch.draw(exitButton, EXIT_BUTTON_X_COORDINATE, EXIT_BUTTON_Y_COORDINATE, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
+//        batch.draw(exitButton, EXIT_BUTTON_X_COORDINATE, EXIT_BUTTON_Y_COORDINATE, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
         batch.end();
     }
 

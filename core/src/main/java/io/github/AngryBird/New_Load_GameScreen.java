@@ -27,7 +27,7 @@ public class New_Load_GameScreen implements Screen {
     private static final float EXIT_GAME_BUTTON_WIDTH=4.7f;
     private static final float NEW_GAME_BUTTON_HEIGHT=2;
     private static final float LOAD_GAME_BUTTON_HEIGHT=2;
-    private static final float EXIT_GAME_BUTTON_HEIGHT = 2.8f;
+    private static final float EXIT_GAME_BUTTON_HEIGHT = 2.6f;
     private static final float NEW_GAME_BUTTON_xCOORDINATE = 5.8f;
     private static final float LOAD_GAME_BUTTON_xCOORDINATE = 5.8f;
     private static final float EXIT_GAME_BUTTON_xCOORDINATE = 5.7f;
