@@ -31,9 +31,9 @@ public class New_Load_GameScreen implements Screen {
     private static final float NEW_GAME_BUTTON_xCOORDINATE = 5.8f;
     private static final float LOAD_GAME_BUTTON_xCOORDINATE = 5.8f;
     private static final float EXIT_GAME_BUTTON_xCOORDINATE = 5.7f;
-    private static final float NEW_GAME_BUTTON_yCOORDINATE = 4;
+    private static final float NEW_GAME_BUTTON_yCOORDINATE = 4.5f;
     private static final float LOAD_GAME_BUTTON_yCOORDINATE = 2.5f;
-    private static final float EXIT_GAME_BUTTON_yCOORDINATE = 1;
+    private static final float EXIT_GAME_BUTTON_yCOORDINATE = 0.5f;
 
     public New_Load_GameScreen(Main angryBird) {
         this.angryBird=angryBird;
@@ -60,9 +60,9 @@ public class New_Load_GameScreen implements Screen {
             }
         }
 
-        if(touchPosition.x>LOAD_GAME_BUTTON_yCOORDINATE &&touchPosition.x<LOAD_GAME_BUTTON_xCOORDINATE+LOAD_GAME_BUTTON_WIDTH&&touchPosition.y>LOAD_GAME_BUTTON_yCOORDINATE&&touchPosition.y<LOAD_GAME_BUTTON_yCOORDINATE+LOAD_GAME_BUTTON_HEIGHT){
+        if(touchPosition.x>LOAD_GAME_BUTTON_xCOORDINATE &&touchPosition.x<LOAD_GAME_BUTTON_xCOORDINATE+LOAD_GAME_BUTTON_WIDTH&&touchPosition.y>LOAD_GAME_BUTTON_yCOORDINATE&&touchPosition.y<LOAD_GAME_BUTTON_yCOORDINATE+LOAD_GAME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-                this.dispose();
+                angryBird.setScreen(new loadScreen(angryBird));
             }
         }
         if(touchPosition.x>EXIT_GAME_BUTTON_xCOORDINATE &&touchPosition.x<EXIT_GAME_BUTTON_xCOORDINATE+EXIT_GAME_BUTTON_WIDTH&&touchPosition.y>EXIT_GAME_BUTTON_yCOORDINATE&&touchPosition.y<EXIT_GAME_BUTTON_yCOORDINATE+EXIT_GAME_BUTTON_HEIGHT){

@@ -22,8 +22,8 @@ public class WinScreen implements Screen {
     private static final float EXIT_BUTTON_HEIGHT=2.8f;
     private static final float HOME_BUTTON_X_COORDINATE=3;
     private static final float EXIT_BUTTON_X_COORDINATE=7;
-    private static final float HOME_BUTTON_Y_COORDINATE=0.5f;
-    private static final float EXIT_BUTTON_Y_COORDINATE=0.4f;
+    private static final float HOME_BUTTON_Y_COORDINATE=0.1f;
+    private static final float EXIT_BUTTON_Y_COORDINATE=0.0f;
     public WinScreen(Main angryBird) {
         this.angryBird=angryBird;
         batch=new SpriteBatch();
@@ -51,7 +51,7 @@ public class WinScreen implements Screen {
         }
         if(touchPosition.x>HOME_BUTTON_X_COORDINATE&&touchPosition.x<HOME_BUTTON_X_COORDINATE+HOME_BUTTON_WIDTH&&touchPosition.y>HOME_BUTTON_Y_COORDINATE&&touchPosition.y<HOME_BUTTON_Y_COORDINATE+HOME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-                this.dispose();
+                angryBird.setScreen(new New_Load_GameScreen(angryBird));
                 //angryBird.setScreen();
             }
         }

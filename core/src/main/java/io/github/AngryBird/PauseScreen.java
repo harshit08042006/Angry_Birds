@@ -38,7 +38,7 @@ public class PauseScreen implements Screen{
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
-        Background=new Texture("pause_background.jpg");
+        Background=new Texture("level_Screen_Background.jpg");
         Home_Game_Button=new Texture("home (1).png");
         Resume_Game_Button=new Texture("resume (1).png");
         Save_Game_Button = new Texture("save (1).png");
