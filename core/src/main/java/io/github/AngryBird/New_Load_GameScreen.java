@@ -40,7 +40,7 @@ public class New_Load_GameScreen implements Screen {
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
-        Background=new Texture("level_Screen_Background.jpg");
+        Background=new Texture("pause_background.jpg");
         New_Game_Button=new Texture("playgameblue (1).png");
         Load_Game_Button=new Texture("loadgameblue (1).png");
         Exit_Game_Button = new Texture("exitNew_blue (1).png");

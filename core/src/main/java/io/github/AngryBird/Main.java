@@ -8,6 +8,6 @@ public class Main extends Game {
     //Hello
 
     @Override
-    public void create() { setScreen(new WinScreen(this));
+    public void create() { setScreen(new New_Load_GameScreen(this));
     }
 }

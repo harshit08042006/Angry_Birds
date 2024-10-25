@@ -29,7 +29,7 @@ public class WinScreen implements Screen {
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
-        backGround=new Texture("angryBirdWinScreenBackground.jpg");
+        backGround=new Texture("angryBirdWinScreenBackground1.png");
         homebutton=new Texture("home (1).png");
         exitButton=new Texture("exitNew_blue (1).png");
     }

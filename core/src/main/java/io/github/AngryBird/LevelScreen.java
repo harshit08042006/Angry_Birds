@@ -19,7 +19,7 @@ public class LevelScreen implements Screen {
     private Texture Level2_Button;
     private Texture Level3_Button;
     private Texture SelectLevel_Button;
-    private Texture GoBack_Button;
+    private Texture backButton;
     private FitViewport viewport;
     private SpriteBatch batch;
     private Vector2 touchPosition;
@@ -36,17 +36,19 @@ public class LevelScreen implements Screen {
     private static final float LEVEL1_BUTTON_yCOORDINATE = 2;
     private static final float LEVEL2_BUTTON_yCOORDINATE = 2;
     private static final float LEVEL3_BUTTON_yCOORDINATE = 2;
-
+    private static final float BACK_BUTTON_xCOORDINATE = 1;
+    private static final float BACK_BUTTON_yCOORDINATE = 7.5f;
 
     public LevelScreen(Main angryBird) {
         this.angryBird=angryBird;
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
-        Background=new Texture("level_Screen_Background.jpg");
+        Background=new Texture("pause_background.jpg");
         Level1_Button=new Texture("level1blue (1).png");
         Level2_Button=new Texture("level2blue (1).png");
         Level3_Button=new Texture("level3blue (1).png");
+        backButton=new Texture("backButton1.png");
     }
     @Override
     public void show(){
@@ -75,6 +77,12 @@ public class LevelScreen implements Screen {
                 this.dispose();
             }
         }
+        if(touchPosition.x>BACK_BUTTON_xCOORDINATE&&touchPosition.x<BACK_BUTTON_xCOORDINATE+1&&touchPosition.y>BACK_BUTTON_yCOORDINATE&&touchPosition.y<BACK_BUTTON_yCOORDINATE+1)
+        {
+            if(Gdx.input.justTouched()) {
+                angryBird.setScreen(new New_Load_GameScreen(angryBird));
+            }
+        }
         ScreenUtils.clear(com.badlogic.gdx.graphics.Color.BLACK);
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
@@ -82,6 +90,7 @@ public class LevelScreen implements Screen {
         batch.draw(Level1_Button, LEVEL1_BUTTON_xCOORDINATE, LEVEL1_BUTTON_yCOORDINATE, LEVEL1_BUTTON_WIDTH, LEVEL1_BUTTON_HEIGHT);
         batch.draw(Level2_Button, LEVEL2_BUTTON_xCOORDINATE, LEVEL2_BUTTON_yCOORDINATE, LEVEL2_BUTTON_WIDTH, LEVEL2_BUTTON_HEIGHT);
         batch.draw(Level3_Button, LEVEL3_BUTTON_xCOORDINATE, LEVEL3_BUTTON_yCOORDINATE, LEVEL3_BUTTON_WIDTH, LEVEL3_BUTTON_HEIGHT);
+        batch.draw(backButton, BACK_BUTTON_xCOORDINATE, BACK_BUTTON_yCOORDINATE, 1, 1 );
         batch.end();
     }
 

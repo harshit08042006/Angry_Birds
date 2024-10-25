@@ -20,6 +20,8 @@ public class GamePlayScreen implements Screen {
     private BlueBlock blueBlock;
     private BrownBlock brownBlock;
     private GreyBlock greyBlock;
+    private Texture redDummy;
+    private Texture greenDummy;
     private Main angryBird;
     private SpriteBatch batch;
     private FitViewport viewport;
@@ -39,6 +41,8 @@ public class GamePlayScreen implements Screen {
         blueBlock = new BlueBlock();
         brownBlock = new BrownBlock();
         greyBlock = new GreyBlock();
+        redDummy=new Texture("redDummy.png");
+        greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
         touchPosition = new Vector2();
     }
@@ -51,6 +55,17 @@ public class GamePlayScreen implements Screen {
     public void render(float v) {
         touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(touchPosition);
+        //Logic for dummy buttons
+        if(touchPosition.x>13.8f&&touchPosition.x<14.8f&&touchPosition.y>0.1f&&touchPosition.y<1.1f){
+            if(Gdx.input.isTouched()){
+                angryBird.setScreen(new LoseScreen(angryBird));
+            }
+        }
+        if(touchPosition.x>14.9f&&touchPosition.x<15.9f&&touchPosition.y>0.1f&&touchPosition.y<1.1f){
+            if(Gdx.input.isTouched()){
+                angryBird.setScreen(new WinScreen(angryBird));
+            }
+        }
 
         if(touchPosition.x>0.2f&&touchPosition.x<2.2f&&touchPosition.y>7&&touchPosition.y<9){
             if(Gdx.input.justTouched()) {
@@ -77,6 +92,8 @@ public class GamePlayScreen implements Screen {
         brownBlock.draw(batch, 14, 3, 1, 1);
         pig.draw(batch, 14, 3.9f, 1, 1);
         batch.draw(pause_button, 0.2f, 7, 2, 2);
+        batch.draw(redDummy, 13.8f, 0.1f, 1, 1);
+        batch.draw(greenDummy, 14.9f, 0.1f, 1, 1);
         batch.end();
 
     }
