@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class LoseScreen implements Screen {
     private Texture backGround;
     private Texture homebutton;
-    private Texture exitButton;
+//    private Texture exitButton;
     private Main angryBird;
     private FitViewport viewport;
     private SpriteBatch batch;
@@ -31,7 +31,7 @@ public class LoseScreen implements Screen {
         touchPosition=new Vector2();
         backGround=new Texture("angryBirdLoseBackground.png");
         homebutton=new Texture("home (1).png");
-        exitButton=new Texture("exitNew_blue (1).png");
+//        exitButton=new Texture("exitNew_blue (1).png");
     }
     @Override
     public void show() {
