@@ -29,7 +29,7 @@ public class LoseScreen implements Screen {
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
         touchPosition=new Vector2();
-        backGround=new Texture("sad_background.gif");
+        backGround=new Texture("newlosescreen.jpg");
         homebutton=new Texture("home (1).png");
         exitButton=new Texture("exitNew_blue (1).png");
     }

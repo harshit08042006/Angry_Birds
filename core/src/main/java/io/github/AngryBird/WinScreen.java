@@ -20,8 +20,8 @@ public class WinScreen implements Screen {
     private static final float EXIT_BUTTON_WIDTH=5;
     private static final float HOME_BUTTON_HEIGHT=2;
     private static final float EXIT_BUTTON_HEIGHT=2.8f;
-    private static final float HOME_BUTTON_X_COORDINATE=3;
-    private static final float EXIT_BUTTON_X_COORDINATE=7;
+    private static final float HOME_BUTTON_X_COORDINATE=3.5f;
+    private static final float EXIT_BUTTON_X_COORDINATE=7.5f;
     private static final float HOME_BUTTON_Y_COORDINATE=0.1f;
     private static final float EXIT_BUTTON_Y_COORDINATE=0.0f;
     public WinScreen(Main angryBird) {
