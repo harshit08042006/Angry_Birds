@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GamePlayScreen implements Screen {
+    private boolean isBirdDragged;
     private Texture background;
     private Texture pause_button;
     private RedBird redBird;
@@ -25,7 +26,10 @@ public class GamePlayScreen implements Screen {
     private Main angryBird;
     private SpriteBatch batch;
     private FitViewport viewport;
+    private Vector2 catapultposition;
     private final Vector2 touchPosition;
+    private float launchMultiplier;
+
     public GamePlayScreen(Main angryBird) {
         this.angryBird=angryBird;
         batch = new SpriteBatch();
@@ -45,6 +49,8 @@ public class GamePlayScreen implements Screen {
         greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
         touchPosition = new Vector2();
+        catapultposition = new Vector2(2, 2);
+        launchMultiplier = 5.0f;
     }
     @Override
     public void show() {
@@ -55,6 +61,15 @@ public class GamePlayScreen implements Screen {
     public void render(float v) {
         touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(touchPosition);
+
+        if(Gdx.input.isTouched() && isBirdDragged){
+            redBird.setPosition(touchPosition.x, touchPosition.y);
+        }
+        if(!Gdx.input.isTouched() && isBirdDragged){
+            Vector2 launchVelocity = new Vector2(catapultposition).sub(redBird.getPosition()).scl(launchMultiplier);
+            Bird.launch(launchVelocity);
+            isBirdDragged = false;
+        }
         //Logic for dummy buttons
         if(touchPosition.x>13.8f&&touchPosition.x<14.8f&&touchPosition.y>0.1f&&touchPosition.y<1.1f){
             if(Gdx.input.isTouched()){
@@ -72,13 +87,15 @@ public class GamePlayScreen implements Screen {
                 angryBird.setScreen(new PauseScreen(angryBird));
             }
         }
+
+
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         catapult.draw(batch, 2, 2, 1.5f, 2);
-        redBird.draw(batch, 2.25f, 3.2f, 1, 1);
-        yellowBird.draw(batch, 1, 2, 1, 1);
-        blackBird.draw(batch, 0.1f, 2, 1, 1);
+        redBird.draw(batch, redBird.getTexture());
+//        yellowBird.draw(batch, 1, 2, 1, 1);
+//        blackBird.draw(batch, 0.1f, 2, 1, 1);
         brownBlock.draw(batch, 10, 2, 1, 1);
         greyBlock.draw(batch, 10, 3, 1, 1);
         blueBlock.draw(batch, 10, 4, 1, 1);

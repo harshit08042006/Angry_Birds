@@ -4,11 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class YellowBird extends Bird {
-    Texture img=new Texture("yellowBird.png");
-    public YellowBird(int x, int y) {
-        super(x, y);
+    public YellowBird(float x, float y) {
+        super(x,  y, 2, 1.5f, "yellowBird.png") ;
     }
-    public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {
-        batch.draw(img,x,y,sizeX,sizeY);
+
+    public void boost(){
+        if (launched){
+            velocity.scl(1.5f);
+        }
     }
 }
