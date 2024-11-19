@@ -18,7 +18,6 @@ public class LevelScreen implements Screen {
     private Texture Level1_Button;
     private Texture Level2_Button;
     private Texture Level3_Button;
-    private Texture SelectLevel_Button;
     private Texture backButton;
     private FitViewport viewport;
     private SpriteBatch batch;
