@@ -21,6 +21,7 @@ public class Bird {
         this.launched = false;
         this.texture = new Texture(texturepath);
         createBirdBody(world, x, y);
+        body.setUserData("bird");
     }
     void createBirdBody(World world, float x, float y)
     {

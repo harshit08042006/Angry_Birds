@@ -5,15 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 
 public class GamePlayScreen implements Screen {
     private boolean isBirdDragged;
@@ -39,6 +37,7 @@ public class GamePlayScreen implements Screen {
     private float launchMultiplier;
     private World world;
     private Box2DDebugRenderer debugRenderer;
+
 //    void createRedBirdBody()
 //    {
 //        BodyDef bodyDef = new BodyDef();
@@ -81,14 +80,51 @@ public class GamePlayScreen implements Screen {
         launchMultiplier = 5.0f;
 //        createRedBirdBody();
 
+        world.setContactListener(new ContactListener(){
+            @Override
+            public void beginContact(Contact contact){
+                Fixture fixA = contact.getFixtureA();
+                Fixture fixB = contact.getFixtureB();
+
+                if(isBird(fixA) && isPig(fixB)){
+                    handlePigHit(fixB.getBody());
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {}
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {}
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse){}
+        });
+
     }
     @Override
     public void show() {
 
     }
 
+
+
+    private boolean isBird(Fixture fixture){
+        return fixture.getBody().getUserData() != null && fixture.getBody().getUserData().equals("bird");
+    }
+
+    private boolean isPig(Fixture fixture){
+        return fixture.getBody().getUserData() != null && fixture.getBody().getUserData().equals("pig");
+    }
+
+    private void handlePigHit(Body pigBody) {
+        world.destroyBody(pigBody);
+    }
+
     @Override
     public void render(float v) {
+
+
         touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(touchPosition);
 
@@ -98,11 +134,13 @@ public class GamePlayScreen implements Screen {
             }
         }
         if(Gdx.input.isTouched() && isBirdDragged){
-            redBird.setPosition(touchPosition.x, touchPosition.y);
+            Vector2 touchPosition = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            redBird.getBody().setTransform(touchPosition, 0);
         }
+
         if(!Gdx.input.isTouched() && isBirdDragged){
-            Vector2 launchVelocity = new Vector2(catapultposition).sub(redBird.getPosition()).scl(launchMultiplier);
-            Bird.launch(launchVelocity);
+            Vector2 launchVelocity = new Vector2(catapultposition).sub(redBird.getPosition()).scl(5.0f);
+            redBird.getBody().setLinearVelocity(launchVelocity);
             isBirdDragged = false;
         }
         //Logic for dummy buttons
@@ -125,6 +163,8 @@ public class GamePlayScreen implements Screen {
         Vector2 redBirdPosition=redBird.getPosition();
 
         batch.setProjectionMatrix(viewport.getCamera().combined);
+
+        world.step(1/60f, 6, 2);
         batch.begin();
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         catapult.draw(batch, 2, 2, 1.5f, 2);
@@ -149,7 +189,6 @@ public class GamePlayScreen implements Screen {
         batch.draw(redDummy, 13.8f, 0.1f, 1, 1);
         batch.draw(greenDummy, 14.9f, 0.1f, 1, 1);
         batch.end();
-        world.step(1/60f, 6, 2);
         debugRenderer.render(world, viewport.getCamera().combined);
 
 
