@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 
 public class GamePlayScreen implements Screen {
-    private boolean isBirdDragged;
     private Texture background;
     private Texture pause_button;
     private RedBird redBird;
@@ -37,6 +36,7 @@ public class GamePlayScreen implements Screen {
     private float launchMultiplier;
     private World world;
     private Box2DDebugRenderer debugRenderer;
+    private Body groundBody;
 
 //    void createRedBirdBody()
 //    {
@@ -54,6 +54,16 @@ public class GamePlayScreen implements Screen {
 //        Fixture fixture = redBirdBody.createFixture(fixtureDef);
 //        circleShape.dispose();
 //    }
+    public void createGroundBody()
+    {
+        BodyDef groundBodyDef = new BodyDef();
+        groundBodyDef.position.set(new Vector2(8, 1));
+        Body groundBody = world.createBody(groundBodyDef);
+        PolygonShape groundBox = new PolygonShape();
+        groundBox.setAsBox(8, 1);
+        groundBody.createFixture(groundBox, 0.0f);
+        groundBox.dispose();
+    }
 
     public GamePlayScreen(Main angryBird) {
         world=new World(new Vector2(0, -9.8f), true);
@@ -62,21 +72,22 @@ public class GamePlayScreen implements Screen {
         batch = new SpriteBatch();
         viewport=new FitViewport(16, 9);
         background = new Texture("angryBirdGameBackground1.jpg");
-        redBird = new RedBird(world, 2.7f, 3.5f);
+        redBird = new RedBird(world, 2.2f, 3.2f);
 //        blackBird = new BlackBird(0, 0);
 //        yellowBird = new YellowBird(0, 0);
         catapult = new Catapult();
-        pig = new Pig(0, 0, 0);
-        chiefPig = new ChiefPig(0, 0, 0);
-        kingPig = new KingPig(0, 0, 0);
-        blueBlock = new BlueBlock(0, 0, 0);
-        brownBlock = new BrownBlock(0 ,0, 0);
-        greyBlock = new GreyBlock(0, 0, 0);
+        pig = new Pig(world, 1, 0, 0);
+        chiefPig = new ChiefPig(world, 2, 0, 0);
+        kingPig = new KingPig(world, 3, 0, 0);
+        blueBlock = new BlueBlock(world, 0, 0, 0);
+        brownBlock = new BrownBlock(world, 0 ,0, 0);
+        greyBlock = new GreyBlock(world, 0, 0, 0);
         redDummy=new Texture("redDummy.png");
         greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
         touchPosition = new Vector2();
         catapultposition = new Vector2(2, 2);
+        createGroundBody();
         launchMultiplier = 5.0f;
 //        createRedBirdBody();
 
@@ -123,26 +134,37 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void render(float v) {
-
-
         touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(touchPosition);
-
-        if(touchPosition.x>2.7f&&touchPosition.x<3.7f&&touchPosition.y>3.5f&&touchPosition.y<4.5f){
-            if(Gdx.input.isTouched()){
-                redBird.launch();
+        float maxDragDistance=1.5f;
+        Vector2 birdInitialPosition=new Vector2(2.2f, 3.2f);
+        if (Gdx.input.isTouched()) {
+            if (redBird.getIsDragged() || (touchPosition.dst(birdInitialPosition) < 1.0f)) { // Start dragging if touch is near the bird
+                redBird.setIsDragged(true);
+                Vector2 dragVector = touchPosition.cpy().sub(birdInitialPosition);
+                if (dragVector.len() > maxDragDistance) {
+                    dragVector.setLength(maxDragDistance);
+                }
+                redBird.getBody().setTransform(birdInitialPosition.cpy().add(dragVector), 0);
             }
         }
-        if(Gdx.input.isTouched() && isBirdDragged){
-            Vector2 touchPosition = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-            redBird.getBody().setTransform(touchPosition, 0);
+        if(!Gdx.input.isTouched() && redBird.getIsDragged()){
+//            Vector2 launchVelocity = new Vector2(catapultposition).sub(redBird.getPosition()).scl(5.0f);
+//            redBird.getBody().setLinearVelocity(launchVelocity);
+            redBird.launch();
+            redBird.setIsDragged(false);
         }
 
-        if(!Gdx.input.isTouched() && isBirdDragged){
-            Vector2 launchVelocity = new Vector2(catapultposition).sub(redBird.getPosition()).scl(5.0f);
-            redBird.getBody().setLinearVelocity(launchVelocity);
-            isBirdDragged = false;
-        }
+//        if(touchPosition.x>2.2f&&touchPosition.x<3.2f&&touchPosition.y>3.2f&&touchPosition.y<4.2f){
+//            if(Gdx.input.isTouched()){
+//                redBird.launch();
+//            }
+//        }
+//        if(Gdx.input.isTouched() && isBirdDragged){
+//            Vector2 touchPosition = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+//            redBird.getBody().setTransform(touchPosition, 0);
+//        }
+
         //Logic for dummy buttons
         if(touchPosition.x>13.8f&&touchPosition.x<14.8f&&touchPosition.y>0.1f&&touchPosition.y<1.1f){
             if(Gdx.input.isTouched()){

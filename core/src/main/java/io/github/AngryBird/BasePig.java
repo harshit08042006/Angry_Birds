@@ -9,18 +9,18 @@ public abstract class BasePig {
     private int y;
     private Body body;
     private Texture texture;
-    public BasePig(int health, int x, int y) {
+    public BasePig(World world, int health, int x, int y) {
         this.health = health;
         this.x = x;
         this.y = y;
+        createPigBody(world, x, y);
     }
 
-    void CreatePigBody(World world, float x, float y)
+    void createPigBody(World world, float x, float y)
     {
-
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(x, y);
+        bodyDef.position.set(x-0.5f, y-0.5f);
         body = world.createBody(bodyDef);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.5f);

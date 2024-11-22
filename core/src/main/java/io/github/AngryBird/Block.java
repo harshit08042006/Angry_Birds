@@ -1,13 +1,34 @@
 package io.github.AngryBird;
 
+
+import com.badlogic.gdx.physics.box2d.*;
+
 public abstract class Block {
+    Body body;
     int x;
     int y;
     int durability;
-    public Block(int x, int y, int durability) {
+    public Block(World world, int x, int y, int durability) {
         this.x = x;
         this.y = y;
         this.durability = durability;
+        createBlockBody(world, x, y);
+    }
+    void createBlockBody(World world, float x, float y)
+    {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(x-0.5f, y-0.5f);
+        body = world.createBody(bodyDef);
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(0.5f);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0f;
+        fixtureDef.restitution = 0.5f;
+        Fixture fixture = body.createFixture(fixtureDef);
+        circleShape.dispose();
     }
     public boolean isCollapsed(){
         if(durability <= 0)

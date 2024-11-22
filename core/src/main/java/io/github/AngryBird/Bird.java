@@ -12,7 +12,7 @@ public class Bird {
     public static boolean launched;
     private Texture texture;
     private Body body;
-
+    private boolean isDragged;
     public Bird(World world, float x, float y, int impact, float speed, String texturepath) {
         this.position = new Vector2(x, y);
         this.velocity = new Vector2(0, 0);
@@ -20,6 +20,7 @@ public class Bird {
         this.impact = impact;
         this.launched = false;
         this.texture = new Texture(texturepath);
+        isDragged = false;
         createBirdBody(world, x, y);
         body.setUserData("bird");
     }
@@ -27,7 +28,7 @@ public class Bird {
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(x, y);
+        bodyDef.position.set(x+0.5f, y+0.5f);
         body = world.createBody(bodyDef);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.5f);
@@ -55,7 +56,7 @@ public class Bird {
     public void launch()//I will improve the function just to check everything is working or not
     {
         body.setType(BodyDef.BodyType.DynamicBody);
-        body.applyLinearImpulse(1f, 0, position.x, position.y, true);
+        body.applyLinearImpulse(6f, 6f, body.getPosition().x, body.getPosition().y, true);
     }
 
     public void draw(SpriteBatch batch, Texture texture){
@@ -67,6 +68,14 @@ public class Bird {
             velocity.y = velocity.y - 9.8f*deltatime;
             position.add(velocity.x*deltatime, velocity.y*deltatime);
         }
+    }
+    public void setIsDragged(boolean dragged)
+    {
+        isDragged = dragged;
+    }
+    public boolean getIsDragged()
+    {
+        return isDragged;
     }
     public Body getBody() {
         return body;
