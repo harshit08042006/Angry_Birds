@@ -30,9 +30,14 @@ public class GamePlayScreen implements Screen {
     private Pig pig;
     private ChiefPig chiefPig;
     private KingPig kingPig;
-    private BlueBlock blueBlock;
-    private BrownBlock brownBlock;
-    private GreyBlock greyBlock;
+    private BlueBlock blueBlock1;
+    private BlueBlock blueBlock2;
+    private BlueBlock blueBlock3;
+    private BrownBlock brownBlock1;
+    private BrownBlock brownBlock2;
+    private BrownBlock brownBlock3;
+    private GreyBlock greyBlock1;
+    private GreyBlock greyBlock2;
     private Texture redDummy;
     private Texture greenDummy;
     private Main angryBird;
@@ -45,7 +50,6 @@ public class GamePlayScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private Body groundBody;
     private ShapeRenderer shapeRenderer;
-
 //    void createRedBirdBody()
 //    {
 //        BodyDef bodyDef = new BodyDef();
@@ -82,15 +86,20 @@ public class GamePlayScreen implements Screen {
         viewport=new FitViewport(16, 9);
         background = new Texture("angryBirdGameBackground1.jpg");
         redBird = new RedBird(world, 2.2f, 3.2f);
-//        blackBird = new BlackBird(0, 0);
-//        yellowBird = new YellowBird(0, 0);
+        blackBird = new BlackBird(world, 0.1f, 2);
+        yellowBird = new YellowBird(world, 1, 2);
         catapult = new Catapult();
-        pig = new Pig(world, 1, 8.50f, 5);
-        chiefPig = new ChiefPig(world, 2, 10, 5);
-        kingPig = new KingPig(world, 3, 12.50f, 6);
-        blueBlock = new BlueBlock(world, 0, 0, 0);
-        brownBlock = new BrownBlock(world, 0 ,0, 0);
-        greyBlock = new GreyBlock(world, 0, 0, 0);
+        pig = new Pig(world, 1, 14, 3.9f);
+        chiefPig = new ChiefPig(world, 2, 12, 5.9f);
+        kingPig = new KingPig(world, 3, 10, 4.9f);
+        blueBlock1 = new BlueBlock(world, 12, 2, 1);
+        blueBlock2 = new BlueBlock(world, 12, 3, 1);
+        blueBlock3 = new BlueBlock(world, 12, 4, 1);
+        brownBlock1 = new BrownBlock(world, 14, 3, 2);
+        brownBlock2 = new BrownBlock(world, 10, 2, 2);
+        brownBlock3 = new BrownBlock(world, 12, 2, 2);
+        greyBlock1 = new GreyBlock(world, 14, 2, 3);
+        greyBlock2 = new GreyBlock(world, 10, 3, 3);
         redDummy=new Texture("redDummy.png");
         greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
@@ -99,37 +108,36 @@ public class GamePlayScreen implements Screen {
         createGroundBody();
         launchMultiplier = 5.0f;
 
-
-        world.setContactListener(new ContactListener(){
-            @Override
-            public void beginContact(Contact contact){
-                Fixture fixA = contact.getFixtureA();
-                Fixture fixB = contact.getFixtureB();
-
-                if(isBird(fixA) && isPig(fixB)){
-                    HandlePigHit((Pig) fixB.getBody().getUserData());
-                    bodiesToDestroy.add(fixB.getBody());
-                }
-                else if (isBird(fixA) && isBlock(fixB)){
-                    HandleBlockHit((Block) fixB.getBody().getUserData());
-                    bodiesToDestroy.add(fixB.getBody());
-                }
-            }
-
-            @Override
-            public void endContact(Contact contact) {}
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {}
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse){}
-        });
+//        world.setContactListener(new ContactListener(){
+//            @Override
+//            public void beginContact(Contact contact){
+//                Fixture fixA = contact.getFixtureA();
+//                Fixture fixB = contact.getFixtureB();
+//
+//                if(isBird(fixA) && isPig(fixB)){
+//                    HandlePigHit((Pig) fixB.getBody().getUserData());
+//                    bodiesToDestroy.add(fixB.getBody());
+//                }
+//                else if (isBird(fixA) && isBlock(fixB)){
+//                    HandleBlockHit((Block) fixB.getBody().getUserData());
+//                    bodiesToDestroy.add(fixB.getBody());
+//                }
+//            }
+//
+//            @Override
+//            public void endContact(Contact contact) {}
+//
+//            @Override
+//            public void preSolve(Contact contact, Manifold oldManifold) {}
+//
+//            @Override
+//            public void postSolve(Contact contact, ContactImpulse impulse){}
+//        });
 
     }
     @Override
     public void show() {
-
+        world.setContactListener(new ListenerClass());
     }
 
 
@@ -239,20 +247,19 @@ public class GamePlayScreen implements Screen {
         redBird.draw(batch, redBird.getBody().getPosition().x-0.5f, redBird.getBody().getPosition().y-0.5f, 1, 1);
 
 //        redBird.draw(batch, redBird.getTexture());
-//        yellowBird.draw(batch, 1, 2, 1, 1);
-//        blackBird.draw(batch, 0.1f, 2, 1, 1);
-        brownBlock.draw(batch, 10, 2, 1, 1);
-        greyBlock.draw(batch, 10, 3, 1, 1);
-        blueBlock.draw(batch, 10, 4, 1, 1);
-        kingPig.draw(batch, kingPig.getBody().getPosition().x - 0.5f, kingPig.getBody().getPosition().y - 0.5f,  1, 1);
-        brownBlock.draw(batch, 12, 2, 1, 1);
-        blueBlock.draw(batch, 12, 3, 1, 1);
-        blueBlock.draw(batch, 12, 4, 1, 1);
-        blueBlock.draw(batch, 12, 5, 1, 1);
+        yellowBird.draw(batch, yellowBird.getBody().getPosition().x-0.5f, yellowBird.getBody().getPosition().y-0.5f, 1, 1);
+        blackBird.draw(batch, blackBird.getBody().getPosition().x-0.5f, blackBird.getBody().getPosition().y-0.5f, 1, 1);
+        blueBlock1.draw(batch, blueBlock1.getBody().getPosition().x-0.5f, blueBlock1.getBody().getPosition().y-0.5f, 1, 1);
+        blueBlock2.draw(batch, blueBlock2.getBody().getPosition().x-0.5f, blueBlock2.getBody().getPosition().y-0.5f, 1, 1);
+        blueBlock3.draw(batch, blueBlock3.getBody().getPosition().x-0.5f, blueBlock3.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock1.draw(batch, brownBlock1.getBody().getPosition().x-0.5f, brownBlock1.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock2.draw(batch, brownBlock2.getBody().getPosition().x-0.5f, brownBlock2.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock3.draw(batch, brownBlock3.getBody().getPosition().x-0.5f, brownBlock3.getBody().getPosition().y-0.5f, 1, 1);
+        greyBlock1.draw(batch, greyBlock1.getBody().getPosition().x-0.5f, greyBlock1.getBody().getPosition().y-0.5f, 1, 1);
+        greyBlock2.draw(batch, greyBlock2.getBody().getPosition().x-0.5f, greyBlock2.getBody().getPosition().y-0.5f, 1, 1);
         chiefPig.draw(batch, chiefPig.getBody().getPosition().x - 0.5f, chiefPig.getBody().getPosition().y - 0.5f, 1, 1);
-        greyBlock.draw(batch, 14, 2, 1, 1);
-        brownBlock.draw(batch, 14, 3, 1, 1);
         pig.draw(batch, pig.getBody().getPosition().x - 0.5f, pig.getBody().getPosition().y - 0.5f, 1, 1);
+        kingPig.draw(batch, kingPig.getBody().getPosition().x - 0.5f, kingPig.getBody().getPosition().y - 0.5f, 1, 1);
         batch.draw(pause_button, 0.2f, 7, 2, 2);
         batch.draw(redDummy, 13.8f, 0.1f, 1, 1);
         batch.draw(greenDummy, 14.9f, 0.1f, 1, 1);

@@ -60,12 +60,15 @@ public abstract class Block {
     public int getDurability() {
         return durability;
     }
+    public Body getBody() {
+        return body;
+    }
 
     public void setDurability(int durability) {
         this.durability = durability;
     }
 
     public void handleBlockHit() {
-        body.getWorld().destroyBody(body);
+        durability=0;
     }
 }
