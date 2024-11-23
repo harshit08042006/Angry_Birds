@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class KingPig extends BasePig {
     Texture img = new Texture("kingPig.png");
 
-    public KingPig(World world, int health, int x, int y) {
+    public KingPig(World world, int health, float x, float y) {
         super(world, health, x, y);
     }
 

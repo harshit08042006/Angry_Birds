@@ -2,8 +2,10 @@ package io.github.AngryBird;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -13,7 +15,12 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 
+import java.util.ArrayList;
+
+
 public class GamePlayScreen implements Screen {
+
+    private final ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     private Texture background;
     private Texture pause_button;
     private RedBird redBird;
@@ -37,6 +44,7 @@ public class GamePlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private Body groundBody;
+    private ShapeRenderer shapeRenderer;
 
 //    void createRedBirdBody()
 //    {
@@ -68,6 +76,7 @@ public class GamePlayScreen implements Screen {
     public GamePlayScreen(Main angryBird) {
         world=new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
+        shapeRenderer = new ShapeRenderer();
         this.angryBird=angryBird;
         batch = new SpriteBatch();
         viewport=new FitViewport(16, 9);
@@ -76,9 +85,9 @@ public class GamePlayScreen implements Screen {
 //        blackBird = new BlackBird(0, 0);
 //        yellowBird = new YellowBird(0, 0);
         catapult = new Catapult();
-        pig = new Pig(world, 1, 0, 0);
-        chiefPig = new ChiefPig(world, 2, 0, 0);
-        kingPig = new KingPig(world, 3, 0, 0);
+        pig = new Pig(world, 1, 8.50f, 5);
+        chiefPig = new ChiefPig(world, 2, 10, 5);
+        kingPig = new KingPig(world, 3, 12.50f, 6);
         blueBlock = new BlueBlock(world, 0, 0, 0);
         brownBlock = new BrownBlock(world, 0 ,0, 0);
         greyBlock = new GreyBlock(world, 0, 0, 0);
@@ -89,7 +98,7 @@ public class GamePlayScreen implements Screen {
         catapultposition = new Vector2(2, 2);
         createGroundBody();
         launchMultiplier = 5.0f;
-//        createRedBirdBody();
+
 
         world.setContactListener(new ContactListener(){
             @Override
@@ -98,7 +107,12 @@ public class GamePlayScreen implements Screen {
                 Fixture fixB = contact.getFixtureB();
 
                 if(isBird(fixA) && isPig(fixB)){
-                    handlePigHit(fixB.getBody());
+                    HandlePigHit((Pig) fixB.getBody().getUserData());
+                    bodiesToDestroy.add(fixB.getBody());
+                }
+                else if (isBird(fixA) && isBlock(fixB)){
+                    HandleBlockHit((Block) fixB.getBody().getUserData());
+                    bodiesToDestroy.add(fixB.getBody());
                 }
             }
 
@@ -121,16 +135,28 @@ public class GamePlayScreen implements Screen {
 
 
     private boolean isBird(Fixture fixture){
-        return fixture.getBody().getUserData() != null && fixture.getBody().getUserData().equals("bird");
+        return fixture.getBody().getUserData() instanceof Bird;
     }
 
     private boolean isPig(Fixture fixture){
-        return fixture.getBody().getUserData() != null && fixture.getBody().getUserData().equals("pig");
+        return fixture.getBody().getUserData() instanceof Pig;
     }
 
-    private void handlePigHit(Body pigBody) {
-        world.destroyBody(pigBody);
+    private boolean isBlock(Fixture fixture){
+        return fixture.getBody().getUserData() instanceof Block;
     }
+
+    private void HandleBlockHit(Block block) {
+        block.handleBlockHit();
+    }
+
+    private void HandlePigHit(Pig pig) {
+        pig.handlePigHit();
+    }
+
+
+
+
 
     @Override
     public void render(float v) {
@@ -154,6 +180,23 @@ public class GamePlayScreen implements Screen {
             redBird.launch();
             redBird.setIsDragged(false);
         }
+
+//        if (redBird.getIsDragged()) {
+//            shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//            shapeRenderer.setColor(Color.WHITE);
+//
+//            Vector2 velocity = birdInitialPosition.cpy().sub(touchPosition).scl(launchMultiplier);
+//            Vector2 position = birdInitialPosition.cpy();
+//
+//            for (int i = 0; i < 100; i++) {
+//                position.add(velocity.cpy().scl(1 / 60f));
+//                velocity.add(0, world.getGravity().y * (1 / 60f));
+//                shapeRenderer.circle(position.x, position.y, 1);
+//            }
+//
+//            shapeRenderer.end();
+//        }
 
 //        if(touchPosition.x>2.2f&&touchPosition.x<3.2f&&touchPosition.y>3.2f&&touchPosition.y<4.2f){
 //            if(Gdx.input.isTouched()){
@@ -184,9 +227,12 @@ public class GamePlayScreen implements Screen {
         }
         Vector2 redBirdPosition=redBird.getPosition();
 
-        batch.setProjectionMatrix(viewport.getCamera().combined);
 
         world.step(1/60f, 6, 2);
+
+
+        batch.setProjectionMatrix(viewport.getCamera().combined);
+
         batch.begin();
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         catapult.draw(batch, 2, 2, 1.5f, 2);
@@ -198,22 +244,41 @@ public class GamePlayScreen implements Screen {
         brownBlock.draw(batch, 10, 2, 1, 1);
         greyBlock.draw(batch, 10, 3, 1, 1);
         blueBlock.draw(batch, 10, 4, 1, 1);
-        kingPig.draw(batch, 10, 4.9f, 1, 1);
+        kingPig.draw(batch, kingPig.getBody().getPosition().x - 0.5f, kingPig.getBody().getPosition().y - 0.5f,  1, 1);
         brownBlock.draw(batch, 12, 2, 1, 1);
         blueBlock.draw(batch, 12, 3, 1, 1);
         blueBlock.draw(batch, 12, 4, 1, 1);
         blueBlock.draw(batch, 12, 5, 1, 1);
-        chiefPig.draw(batch, 12, 5.9f, 1, 1);
+        chiefPig.draw(batch, chiefPig.getBody().getPosition().x - 0.5f, chiefPig.getBody().getPosition().y - 0.5f, 1, 1);
         greyBlock.draw(batch, 14, 2, 1, 1);
         brownBlock.draw(batch, 14, 3, 1, 1);
-        pig.draw(batch, 14, 3.9f, 1, 1);
+        pig.draw(batch, pig.getBody().getPosition().x - 0.5f, pig.getBody().getPosition().y - 0.5f, 1, 1);
         batch.draw(pause_button, 0.2f, 7, 2, 2);
         batch.draw(redDummy, 13.8f, 0.1f, 1, 1);
         batch.draw(greenDummy, 14.9f, 0.1f, 1, 1);
         batch.end();
+
+//        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(Color.RED);
+//        Vector2 velocity = birdInitialPosition.cpy().sub(touchPosition).scl(launchMultiplier);
+//        Vector2 position = birdInitialPosition.cpy();
+//        for (int i = 0; i < 100; i++) {
+//            position.add(velocity.scl(1 / 60f));
+//            velocity.add(0, world.getGravity().y * (1 / 60f));
+//            shapeRenderer.circle(position.x, position.y, 0.1f);
+//        }
+//        shapeRenderer.end();
+        for (Body body : bodiesToDestroy) {
+            if (body.getUserData() instanceof Pig) {
+                Pig pig = (Pig) body.getUserData();
+                pig.dispose();
+            }
+            world.destroyBody(body);
+        }
+        bodiesToDestroy.clear();
+
         debugRenderer.render(world, viewport.getCamera().combined);
-
-
     }
 
     @Override
@@ -238,6 +303,13 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        background.dispose();
+        pause_button.dispose();
+        redDummy.dispose();
+        greenDummy.dispose();
+        batch.dispose();
+        shapeRenderer.dispose();
+        debugRenderer.dispose();
+        world.dispose();
     }
 }

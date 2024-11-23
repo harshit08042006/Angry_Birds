@@ -22,7 +22,7 @@ public class Bird {
         this.texture = new Texture(texturepath);
         isDragged = false;
         createBirdBody(world, x, y);
-        body.setUserData("bird");
+        body.setUserData(this);
     }
     void createBirdBody(World world, float x, float y)
     {
@@ -87,4 +87,5 @@ public class Bird {
     public void dispose(){
         texture.dispose();
     }
+
 }

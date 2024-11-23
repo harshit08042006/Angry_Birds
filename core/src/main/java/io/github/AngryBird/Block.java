@@ -8,11 +8,13 @@ public abstract class Block {
     int x;
     int y;
     int durability;
+
     public Block(World world, int x, int y, int durability) {
         this.x = x;
         this.y = y;
         this.durability = durability;
         createBlockBody(world, x, y);
+        body.setUserData(this);
     }
     void createBlockBody(World world, float x, float y)
     {
@@ -61,5 +63,9 @@ public abstract class Block {
 
     public void setDurability(int durability) {
         this.durability = durability;
+    }
+
+    public void handleBlockHit() {
+        body.getWorld().destroyBody(body);
     }
 }

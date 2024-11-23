@@ -5,15 +5,16 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public abstract class BasePig {
     private int health;
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     private Body body;
     private Texture texture;
-    public BasePig(World world, int health, int x, int y) {
+    public BasePig(World world, int health, float x, float y) {
         this.health = health;
         this.x = x;
         this.y = y;
         createPigBody(world, x, y);
+        body.setUserData(this);
     }
 
     void createPigBody(World world, float x, float y)
@@ -50,6 +51,17 @@ public abstract class BasePig {
         this.y = y;
     }
     public int getHealth() {return health;}
-    public int getX() {return x;}
-    public int getY() {return y;}
+    public float getX() {return x;}
+    public float getY() {return y;}
+
+    public void handlePigHit() {
+        health = 0;
+    }
+    public Body getBody() {
+        return body;
+    }
+
+    public void dispose() {
+        texture.dispose();
+    }
 }
