@@ -36,7 +36,7 @@ public class Bird {
         fixtureDef.shape = circleShape;
         fixtureDef.density = 1f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0.5f;
+        fixtureDef.restitution = 0.2f;
         Fixture fixture = body.createFixture(fixtureDef);
         circleShape.dispose();
     }
@@ -69,6 +69,7 @@ public class Bird {
             position.add(velocity.x*deltatime, velocity.y*deltatime);
         }
     }
+
     public void setIsDragged(boolean dragged)
     {
         isDragged = dragged;

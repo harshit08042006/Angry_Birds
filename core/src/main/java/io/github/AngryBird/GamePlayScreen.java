@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class GamePlayScreen implements Screen {
 
-    private final ArrayList<Body> bodiesToDestroy = new ArrayList<>();
+    public static ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     private Texture background;
     private Texture pause_button;
     private RedBird redBird;
@@ -58,7 +58,7 @@ public class GamePlayScreen implements Screen {
 //        redBirdBody = world.createBody(bodyDef);
 //        CircleShape circleShape = new CircleShape();
 //        circleShape.setRadius(0.5f);
-//        FixtureDef fixtureDef = new FixtureDef();
+//        FixtureDef fixtureDef = new FixtureDef();6
 //        fixtureDef.shape = circleShape;
 //        fixtureDef.density = 1f;
 //        fixtureDef.friction = 0f;
@@ -176,7 +176,7 @@ public class GamePlayScreen implements Screen {
             if (redBird.getIsDragged() || (touchPosition.dst(birdInitialPosition) < 1.0f)) { // Start dragging if touch is near the bird
                 redBird.setIsDragged(true);
                 Vector2 dragVector = touchPosition.cpy().sub(birdInitialPosition);
-                if (dragVector.len() > maxDragDistance) {
+                if (dragVector.len() > maxDragDistance){
                     dragVector.setLength(maxDragDistance);
                 }
                 redBird.getBody().setTransform(birdInitialPosition.cpy().add(dragVector), 0);
@@ -263,6 +263,11 @@ public class GamePlayScreen implements Screen {
         batch.draw(pause_button, 0.2f, 7, 2, 2);
         batch.draw(redDummy, 13.8f, 0.1f, 1, 1);
         batch.draw(greenDummy, 14.9f, 0.1f, 1, 1);
+
+        for (Body body : bodiesToDestroy) {
+            world.destroyBody(body);
+        }
+        bodiesToDestroy.clear();
         batch.end();
 
 //        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
@@ -276,15 +281,14 @@ public class GamePlayScreen implements Screen {
 //            shapeRenderer.circle(position.x, position.y, 0.1f);
 //        }
 //        shapeRenderer.end();
-        for (Body body : bodiesToDestroy) {
-            if (body.getUserData() instanceof Pig) {
-                Pig pig = (Pig) body.getUserData();
-                pig.dispose();
-            }
-            world.destroyBody(body);
-        }
+//        for (Body body : bodiesToDestroy) {
+//            if (body.getUserData() instanceof BasePig) {
+//                BasPig pig = (Pig) body.getUserData();
+//                pig.dispose();
+//            }
+//            world.destroyBody(body);
+//        }
         bodiesToDestroy.clear();
-
         debugRenderer.render(world, viewport.getCamera().combined);
     }
 

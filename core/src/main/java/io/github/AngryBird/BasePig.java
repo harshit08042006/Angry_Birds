@@ -29,7 +29,7 @@ public abstract class BasePig {
         fixtureDef.shape = circleShape;
         fixtureDef.density = 1f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0.5f;
+        fixtureDef.restitution = 0.2f;
         Fixture fixture = body.createFixture(fixtureDef);
         circleShape.dispose();
     }
