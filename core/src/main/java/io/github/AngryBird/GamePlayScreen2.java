@@ -16,10 +16,17 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 public class GamePlayScreen2 implements Screen {
 
+    public static LinkedHashMap<Body, Vector2> bodiesToMove=new LinkedHashMap<>();
+    private static ArrayList<Block> blocks=new ArrayList<>();
+    private static ArrayList<BasePig> pigs=new ArrayList<>();
+    private static ArrayList<Bird> birds=new ArrayList<>();
     public static ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     private Texture background;
     private Texture pause_button;
@@ -54,22 +61,17 @@ public class GamePlayScreen2 implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private Body groundBody;
     private ShapeRenderer shapeRenderer;
-    //    void createRedBirdBody()
-//    {
-//        BodyDef bodyDef = new BodyDef();
-//        bodyDef.type = BodyDef.BodyType.StaticBody;
-//        bodyDef.position.set(2.7f, 3.5f);
-//        redBirdBody = world.createBody(bodyDef);
-//        CircleShape circleShape = new CircleShape();
-//        circleShape.setRadius(0.5f);
-//        FixtureDef fixtureDef = new FixtureDef();6
-//        fixtureDef.shape = circleShape;
-//        fixtureDef.density = 1f;
-//        fixtureDef.friction = 0f;
-//        fixtureDef.restitution = 0.5f;
-//        Fixture fixture = redBirdBody.createFixture(fixtureDef);
-//        circleShape.dispose();
-//    }
+    public static ArrayList<Block> getBlocks() {
+        return blocks;
+    }
+
+    public static ArrayList<BasePig> getPigs() {
+        return pigs;
+    }
+
+    public static ArrayList<Bird> getBirds() {
+        return birds;
+    }
     public void createGroundBody()
     {
         BodyDef groundBodyDef = new BodyDef();
@@ -93,22 +95,35 @@ public class GamePlayScreen2 implements Screen {
 //        blackBird = new BlackBird(world, 0.1f, 2);
 //        yellowBird = new YellowBird(world, 1, 2);
         catapult = new Catapult();
-        pig = new Pig(world, 1, 14, 6.9f);
+        pig = new Pig(world, 1, 10, 6.9f);
         chiefPig = new ChiefPig(world, 2, 12, 7.9f);
-        kingPig = new KingPig(world, 3, 10, 3.9f);
+        kingPig = new KingPig(world, 3, 14, 3.9f);
 //        blueBlock1 = new BlueBlock(world, 12, 2, 1);
         blueBlock2 = new BlueBlock(world, 12, 3, 1);
         blueBlock3 = new BlueBlock(world, 12, 4, 1);
         blueBlock4 = new BlueBlock(world, 12, 5, 1);
         blueBlock5 = new BlueBlock(world, 12, 6, 1);
         blueBlock6 = new BlueBlock(world, 12, 7, 1);
-        brownBlock1 = new BrownBlock(world, 14, 3, 2);
-        brownBlock2 = new BrownBlock(world, 14, 4, 2);
-        brownBlock3 = new BrownBlock(world, 14, 5, 2);
-        brownBlock4 = new BrownBlock(world, 14, 6, 2);
+        brownBlock1 = new BrownBlock(world, 10, 3, 2);
+        brownBlock2 = new BrownBlock(world, 10, 4, 2);
+        brownBlock3 = new BrownBlock(world, 10, 5, 2);
+        brownBlock4 = new BrownBlock(world, 10, 6, 2);
 
 //        greyBlock1 = new GreyBlock(world, 14, 2, 3);
-        greyBlock2 = new GreyBlock(world, 10, 3, 3);
+        greyBlock2 = new GreyBlock(world, 14, 3, 3);
+        pigs.add(pig);
+        pigs.add(chiefPig);
+        pigs.add(kingPig);
+        blocks.add(blueBlock2);
+        blocks.add(blueBlock3);
+        blocks.add(blueBlock4);
+        blocks.add(blueBlock5);
+        blocks.add(blueBlock6);
+        blocks.add(brownBlock1);
+        blocks.add(brownBlock2);
+        blocks.add(brownBlock3);
+        blocks.add(brownBlock4);
+        blocks.add(greyBlock2);
         redDummy=new Texture("redDummy.png");
         greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
@@ -167,25 +182,25 @@ public class GamePlayScreen2 implements Screen {
 
 
 
-    private boolean isBird(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Bird;
-    }
-
-    private boolean isPig(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Pig;
-    }
-
-    private boolean isBlock(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Block;
-    }
-
-    private void HandleBlockHit(Block block) {
-        block.handleBlockHit();
-    }
-
-    private void HandlePigHit(Pig pig) {
-        pig.handlePigHit();
-    }
+//    private boolean isBird(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Bird;
+//    }
+//
+//    private boolean isPig(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Pig;
+//    }
+//
+//    private boolean isBlock(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Block;
+//    }
+//
+//    private void HandleBlockHit(Block block) {
+//        block.handleBlockHit();
+//    }
+//
+//    private void HandlePigHit(Pig pig) {
+//        pig.handlePigHit();
+//    }
 
 
 
@@ -193,6 +208,11 @@ public class GamePlayScreen2 implements Screen {
 
     @Override
     public void render(float v) {
+        for(Map.Entry<Body, Vector2> i: bodiesToMove.entrySet())
+        {
+            i.getKey().setTransform(i.getValue().x, i.getValue().y, 0);
+        }
+        bodiesToMove.clear();
         touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(touchPosition);
         float maxDragDistance=1.5f;
@@ -240,7 +260,7 @@ public class GamePlayScreen2 implements Screen {
             );
 
 
-            System.out.println("Launch Velocity: " + launchVelocity);
+//            System.out.println("Launch Velocity: " + launchVelocity);
             redBird.getBody().setType(BodyDef.BodyType.DynamicBody);
             redBird.getBody().setLinearVelocity(launchVelocity);
 
@@ -300,9 +320,6 @@ public class GamePlayScreen2 implements Screen {
         Vector2 redBirdPosition=redBird.getPosition();
 
 
-        world.step(1/60f, 6, 2);
-
-
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
         batch.begin();
@@ -352,6 +369,7 @@ public class GamePlayScreen2 implements Screen {
 //        shapeRenderer.end();
 
         debugRenderer.render(world, viewport.getCamera().combined);
+        world.step(1/60f, 6, 2);
     }
 
 

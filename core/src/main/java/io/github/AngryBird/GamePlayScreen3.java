@@ -142,25 +142,25 @@ public class GamePlayScreen3 implements Screen {
 
 
 
-    private boolean isBird(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Bird;
-    }
-
-    private boolean isPig(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Pig;
-    }
-
-    private boolean isBlock(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Block;
-    }
-
-    private void HandleBlockHit(Block block) {
-        block.handleBlockHit();
-    }
-
-    private void HandlePigHit(Pig pig) {
-        pig.handlePigHit();
-    }
+//    private boolean isBird(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Bird;
+//    }
+//
+//    private boolean isPig(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Pig;
+//    }
+//
+//    private boolean isBlock(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Block;
+//    }
+//
+//    private void HandleBlockHit(Block block) {
+//        block.handleBlockHit();
+//    }
+//
+//    private void HandlePigHit(Pig pig) {
+//        pig.handlePigHit();
+//    }
 
 
 

@@ -68,7 +68,15 @@ public abstract class Block {
         this.durability = durability;
     }
 
-    public void handleBlockHit() {
-        durability=0;
+    public int handleBlockHit(int impact) {
+        durability-=impact;
+        return durability;
+
     }
+    public String toString()
+    {
+        return body.getPosition().toString();
+    }
+
+
 }

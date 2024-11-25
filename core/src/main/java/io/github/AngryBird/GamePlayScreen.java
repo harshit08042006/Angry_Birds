@@ -19,7 +19,9 @@ import java.util.ArrayList;
 
 
 public class GamePlayScreen implements Screen {
-
+    private static ArrayList<Block> blocks=new ArrayList<>();
+    private static ArrayList<BasePig> pigs=new ArrayList<>();
+    private static ArrayList<Bird> birds=new ArrayList<>();
     public static ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     private Texture background;
     private Texture pause_button;
@@ -66,6 +68,17 @@ public class GamePlayScreen implements Screen {
 //        Fixture fixture = redBirdBody.createFixture(fixtureDef);
 //        circleShape.dispose();
 //    }
+    public static ArrayList<Block> getBlocks() {
+        return blocks;
+    }
+
+    public static ArrayList<BasePig> getPigs() {
+        return pigs;
+    }
+
+    public static ArrayList<Bird> getBirds() {
+        return birds;
+    }
     public void createGroundBody()
     {
         BodyDef groundBodyDef = new BodyDef();
@@ -142,25 +155,25 @@ public class GamePlayScreen implements Screen {
 
 
 
-    private boolean isBird(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Bird;
-    }
-
-    private boolean isPig(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Pig;
-    }
-
-    private boolean isBlock(Fixture fixture){
-        return fixture.getBody().getUserData() instanceof Block;
-    }
-
-    private void HandleBlockHit(Block block) {
-        block.handleBlockHit();
-    }
-
-    private void HandlePigHit(Pig pig) {
-        pig.handlePigHit();
-    }
+//    private boolean isBird(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Bird;
+//    }
+//
+//    private boolean isPig(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Pig;
+//    }
+//
+//    private boolean isBlock(Fixture fixture){
+//        return fixture.getBody().getUserData() instanceof Block;
+//    }
+//
+//    private void HandleBlockHit(Block block) {
+//        block.handleBlockHit();
+//    }
+//
+//    private void HandlePigHit(Pig pig) {
+//        pig.handlePigHit();
+//    }
 
 
 
@@ -287,6 +300,7 @@ public class GamePlayScreen implements Screen {
         batch.draw(pause_button, 0.2f, 7, 2, 2);
         batch.draw(redDummy, 13.8f, 0.1f, 1, 1);
         batch.draw(greenDummy, 14.9f, 0.1f, 1, 1);
+
 
         for (Body body : bodiesToDestroy) {
             world.destroyBody(body);

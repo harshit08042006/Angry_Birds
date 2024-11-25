@@ -54,8 +54,9 @@ public abstract class BasePig {
     public float getX() {return x;}
     public float getY() {return y;}
 
-    public void handlePigHit() {
-        health = 0;
+    public int handlePigHit(int impact) {
+        health -=impact;
+        return health;
     }
     public Body getBody() {
         return body;
