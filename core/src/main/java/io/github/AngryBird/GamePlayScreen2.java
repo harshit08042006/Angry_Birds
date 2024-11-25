@@ -18,14 +18,14 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import java.util.ArrayList;
 
 
-public class GamePlayScreen implements Screen {
+public class GamePlayScreen2 implements Screen {
 
     public static ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     private Texture background;
     private Texture pause_button;
     private RedBird redBird;
-    private BlackBird blackBird;
-    private YellowBird yellowBird;
+//    private BlackBird blackBird;
+//    private YellowBird yellowBird;
     private Catapult catapult;
     private Pig pig;
     private ChiefPig chiefPig;
@@ -33,9 +33,13 @@ public class GamePlayScreen implements Screen {
     private BlueBlock blueBlock1;
     private BlueBlock blueBlock2;
     private BlueBlock blueBlock3;
+    private BlueBlock blueBlock4;
+    private BlueBlock blueBlock5;
+    private BlueBlock blueBlock6;
     private BrownBlock brownBlock1;
     private BrownBlock brownBlock2;
     private BrownBlock brownBlock3;
+    private BrownBlock brownBlock4;
     private GreyBlock greyBlock1;
     private GreyBlock greyBlock2;
     private Texture redDummy;
@@ -50,7 +54,7 @@ public class GamePlayScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private Body groundBody;
     private ShapeRenderer shapeRenderer;
-//    void createRedBirdBody()
+    //    void createRedBirdBody()
 //    {
 //        BodyDef bodyDef = new BodyDef();
 //        bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -77,7 +81,7 @@ public class GamePlayScreen implements Screen {
         groundBox.dispose();
     }
 
-    public GamePlayScreen(Main angryBird) {
+    public GamePlayScreen2(Main angryBird) {
         world=new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
         shapeRenderer = new ShapeRenderer();
@@ -86,19 +90,24 @@ public class GamePlayScreen implements Screen {
         viewport=new FitViewport(16, 9);
         background = new Texture("angryBirdGameBackground1.jpg");
         redBird = new RedBird(world, 2.2f, 3.2f);
-        blackBird = new BlackBird(world, 0.1f, 2);
-        yellowBird = new YellowBird(world, 1, 2);
+//        blackBird = new BlackBird(world, 0.1f, 2);
+//        yellowBird = new YellowBird(world, 1, 2);
         catapult = new Catapult();
-        pig = new Pig(world, 1, 14, 3.9f);
-        chiefPig = new ChiefPig(world, 2, 12, 4.9f);
+        pig = new Pig(world, 1, 14, 6.9f);
+        chiefPig = new ChiefPig(world, 2, 12, 7.9f);
         kingPig = new KingPig(world, 3, 10, 3.9f);
 //        blueBlock1 = new BlueBlock(world, 12, 2, 1);
         blueBlock2 = new BlueBlock(world, 12, 3, 1);
         blueBlock3 = new BlueBlock(world, 12, 4, 1);
+        blueBlock4 = new BlueBlock(world, 12, 5, 1);
+        blueBlock5 = new BlueBlock(world, 12, 6, 1);
+        blueBlock6 = new BlueBlock(world, 12, 7, 1);
         brownBlock1 = new BrownBlock(world, 14, 3, 2);
-//        brownBlock2 = new BrownBlock(world, 10, 2.2f, 2);
-//        brownBlock3 = new BrownBlock(world, 12, 2.2f, 2);
-//        greyBlock1 = new GreyBlock(world, 14, 2.2f, 3);
+        brownBlock2 = new BrownBlock(world, 14, 4, 2);
+        brownBlock3 = new BrownBlock(world, 14, 5, 2);
+        brownBlock4 = new BrownBlock(world, 14, 6, 2);
+
+//        greyBlock1 = new GreyBlock(world, 14, 2, 3);
         greyBlock2 = new GreyBlock(world, 10, 3, 3);
         redDummy=new Texture("redDummy.png");
         greenDummy=new Texture("greenDummy.png");
@@ -134,6 +143,22 @@ public class GamePlayScreen implements Screen {
 //            public void postSolve(Contact contact, ContactImpulse impulse){}
 //        });
 
+    }
+
+    public void drawTrajectory(Vector2 initialPosition, Vector2 initialVelocity, float timeStep, int numSteps) {
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
+        float g = world.getGravity().y;
+
+        for (int i = 0; i < numSteps; i++) {
+            float t = i * timeStep;
+            float x = initialPosition.x + initialVelocity.x * t;
+            float y = initialPosition.y + initialVelocity.y * t + 0.5f * g * t * t;
+            shapeRenderer.circle(x, y, 5f);
+        }
+
+        shapeRenderer.end();
     }
     @Override
     public void show() {
@@ -179,9 +204,23 @@ public class GamePlayScreen implements Screen {
                 if (dragVector.len() > maxDragDistance){
                     dragVector.setLength(maxDragDistance);
                 }
+                Vector2 launchVector = birdInitialPosition.cpy().sub(redBird.getBody().getPosition());
+                float launchSpeed = Math.min(launchVector.len() * 20.0f, 30.0f);
+                float launchAngle = launchVector.angleRad();
+                Vector2 launchVelocity = new Vector2(
+                    (float) Math.cos(launchAngle) * launchSpeed,
+                    (float) Math.sin(launchAngle) * launchSpeed
+                );
+                drawTrajectory(redBird.getPosition(), launchVelocity, 0.05f, 100);
                 redBird.getBody().setTransform(birdInitialPosition.cpy().add(dragVector), 0);
             }
         }
+
+//        if (redBird.getIsDragged()) {
+//
+//        }
+
+
         if(!Gdx.input.isTouched() && redBird.getIsDragged()){
 //            Vector2 launchVelocity = new Vector2(catapultposition).sub(redBird.getPosition()).scl(5.0f);
 //            redBird.getBody().setLinearVelocity(launchVelocity);
@@ -200,6 +239,7 @@ public class GamePlayScreen implements Screen {
                 (float) Math.sin(launchAngle) * launchSpeed
             );
 
+
             System.out.println("Launch Velocity: " + launchVelocity);
             redBird.getBody().setType(BodyDef.BodyType.DynamicBody);
             redBird.getBody().setLinearVelocity(launchVelocity);
@@ -213,22 +253,22 @@ public class GamePlayScreen implements Screen {
             redBird.setIsDragged(false);
         }
 
-        if (redBird.getIsDragged()) {
-            shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(Color.WHITE);
-
-            Vector2 velocity = birdInitialPosition.cpy().sub(touchPosition).scl(launchMultiplier);
-            Vector2 position = birdInitialPosition.cpy();
-
-            for (int i = 0; i < 100; i++) {
-                position.add(velocity.cpy().scl(1 / 60f));
-                velocity.add(0, world.getGravity().y * (1 / 60f));
-                shapeRenderer.circle(position.x, position.y, 1);
-            }
-
-            shapeRenderer.end();
-        }
+//        if (redBird.getIsDragged()) {
+//            shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//            shapeRenderer.setColor(Color.WHITE);
+//
+//            Vector2 velocity = birdInitialPosition.cpy().sub(touchPosition).scl(launchMultiplier);
+//            Vector2 position = birdInitialPosition.cpy();
+//
+//            for (int i = 0; i < 100; i++) {
+//                position.add(velocity.cpy().scl(1 / 60f));
+//                velocity.add(0, world.getGravity().y * (1 / 60f));
+//                shapeRenderer.circle(position.x, position.y, 1);
+//            }
+//
+//            shapeRenderer.end();
+//        }
 
 //        if(touchPosition.x>2.2f&&touchPosition.x<3.2f&&touchPosition.y>3.2f&&touchPosition.y<4.2f){
 //            if(Gdx.input.isTouched()){
@@ -271,15 +311,20 @@ public class GamePlayScreen implements Screen {
         redBird.draw(batch, redBird.getBody().getPosition().x-0.5f, redBird.getBody().getPosition().y-0.5f, 1, 1);
 
 //        redBird.draw(batch, redBird.getTexture());
-        yellowBird.draw(batch, yellowBird.getBody().getPosition().x-0.5f, yellowBird.getBody().getPosition().y-0.5f, 1, 1);
-        blackBird.draw(batch, blackBird.getBody().getPosition().x-0.5f, blackBird.getBody().getPosition().y-0.5f, 1, 1);
+//        yellowBird.draw(batch, yellowBird.getBody().getPosition().x-0.5f, yellowBird.getBody().getPosition().y-0.5f, 1, 1);
+//        blackBird.draw(batch, blackBird.getBody().getPosition().x-0.5f, blackBird.getBody().getPosition().y-0.5f, 1, 1);
 //        blueBlock1.draw(batch, blueBlock1.getBody().getPosition().x-0.5f, blueBlock1.getBody().getPosition().y-0.5f, 1, 1);
         blueBlock2.draw(batch, blueBlock2.getBody().getPosition().x-0.5f, blueBlock2.getBody().getPosition().y-0.5f, 1, 1);
         blueBlock3.draw(batch, blueBlock3.getBody().getPosition().x-0.5f, blueBlock3.getBody().getPosition().y-0.5f, 1, 1);
+        blueBlock4.draw(batch, blueBlock4.getBody().getPosition().x-0.5f, blueBlock4.getBody().getPosition().y-0.5f, 1, 1);
+        blueBlock5.draw(batch, blueBlock5.getBody().getPosition().x-0.5f, blueBlock5.getBody().getPosition().y-0.5f, 1, 1);
+        blueBlock6.draw(batch, blueBlock6.getBody().getPosition().x-0.5f, blueBlock6.getBody().getPosition().y-0.5f, 1, 1);
+
         brownBlock1.draw(batch, brownBlock1.getBody().getPosition().x-0.5f, brownBlock1.getBody().getPosition().y-0.5f, 1, 1);
-//        brownBlock2.draw(batch, brownBlock2.getBody().getPosition().x-0.5f, brownBlock2.getBody().getPosition().y-0.5f, 1, 1);
-//        brownBlock3.draw(batch, brownBlock3.getBody().getPosition().x-0.5f, brownBlock3.getBody().getPosition().y-0.5f, 1, 1);
-//        greyBlock1.draw(batch, greyBlock1.getBody().getPosition().x-0.5f, greyBlock1.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock2.draw(batch, brownBlock2.getBody().getPosition().x-0.5f, brownBlock2.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock3.draw(batch, brownBlock3.getBody().getPosition().x-0.5f, brownBlock3.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock4.draw(batch, brownBlock4.getBody().getPosition().x-0.5f, brownBlock4.getBody().getPosition().y-0.5f, 1, 1);
+
         greyBlock2.draw(batch, greyBlock2.getBody().getPosition().x-0.5f, greyBlock2.getBody().getPosition().y-0.5f, 1, 1);
         chiefPig.draw(batch, chiefPig.getBody().getPosition().x - 0.5f, chiefPig.getBody().getPosition().y - 0.5f, 1, 1);
         pig.draw(batch, pig.getBody().getPosition().x - 0.5f, pig.getBody().getPosition().y - 0.5f, 1, 1);
@@ -308,6 +353,8 @@ public class GamePlayScreen implements Screen {
 
         debugRenderer.render(world, viewport.getCamera().combined);
     }
+
+
 
     @Override
     public void resize(int i, int i1) {

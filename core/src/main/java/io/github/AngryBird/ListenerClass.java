@@ -23,10 +23,12 @@ public class ListenerClass implements ContactListener {
         Fixture fixB = contact.getFixtureB();
         if (isBird(fixA) && isPig(fixB)) {
             HandlePigHit((BasePig) fixB.getBody().getUserData());
-            GamePlayScreen.bodiesToDestroy.add(fixB.getBody());
+            GamePlayScreen2.bodiesToDestroy.add(fixB.getBody());
+//            GamePlayScreen.bodiesToDestroy.add(fixB.getBody());
         } else if (isBird(fixA) && isBlock(fixB)) {
             HandleBlockHit((Block) fixB.getBody().getUserData());
-            GamePlayScreen.bodiesToDestroy.add(fixB.getBody());
+            GamePlayScreen2.bodiesToDestroy.add(fixB.getBody());
+//            GamePlayScreen.bodiesToDestroy.add(fixB.getBody());
         }
 
     }

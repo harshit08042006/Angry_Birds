@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class GreyBlock extends Block{
     Texture img=new Texture("greyBlock.png");
-    public GreyBlock(World world, int x, int y, int durability){
+    public GreyBlock(World world, float x, float y, int durability){
         super(world, x,y,durability);
     }
     public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {

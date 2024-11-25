@@ -5,11 +5,11 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public abstract class Block {
     Body body;
-    int x;
-    int y;
+    float x;
+    float y;
     int durability;
 
-    public Block(World world, int x, int y, int durability) {
+    public Block(World world, float x, float y, int durability) {
         this.x = x;
         this.y = y;
         this.durability = durability;
@@ -41,7 +41,7 @@ public abstract class Block {
     public void reduceDurability(int damage){
         durability -= damage;
     }
-    public int getX() {
+    public float getX() {
         return x;
     }
 
@@ -49,7 +49,7 @@ public abstract class Block {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 

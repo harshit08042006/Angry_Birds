@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import java.util.ArrayList;
 
 
-public class GamePlayScreen implements Screen {
+public class GamePlayScreen3 implements Screen {
 
     public static ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     private Texture background;
@@ -50,7 +50,7 @@ public class GamePlayScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private Body groundBody;
     private ShapeRenderer shapeRenderer;
-//    void createRedBirdBody()
+    //    void createRedBirdBody()
 //    {
 //        BodyDef bodyDef = new BodyDef();
 //        bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -77,7 +77,7 @@ public class GamePlayScreen implements Screen {
         groundBox.dispose();
     }
 
-    public GamePlayScreen(Main angryBird) {
+    public GamePlayScreen3(Main angryBird) {
         world=new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
         shapeRenderer = new ShapeRenderer();
@@ -90,15 +90,15 @@ public class GamePlayScreen implements Screen {
         yellowBird = new YellowBird(world, 1, 2);
         catapult = new Catapult();
         pig = new Pig(world, 1, 14, 3.9f);
-        chiefPig = new ChiefPig(world, 2, 12, 4.9f);
-        kingPig = new KingPig(world, 3, 10, 3.9f);
-//        blueBlock1 = new BlueBlock(world, 12, 2, 1);
+        chiefPig = new ChiefPig(world, 2, 12, 5.9f);
+        kingPig = new KingPig(world, 3, 10, 4.9f);
+        blueBlock1 = new BlueBlock(world, 12, 2, 1);
         blueBlock2 = new BlueBlock(world, 12, 3, 1);
         blueBlock3 = new BlueBlock(world, 12, 4, 1);
         brownBlock1 = new BrownBlock(world, 14, 3, 2);
-//        brownBlock2 = new BrownBlock(world, 10, 2.2f, 2);
-//        brownBlock3 = new BrownBlock(world, 12, 2.2f, 2);
-//        greyBlock1 = new GreyBlock(world, 14, 2.2f, 3);
+        brownBlock2 = new BrownBlock(world, 10, 2, 2);
+        brownBlock3 = new BrownBlock(world, 12, 2, 2);
+        greyBlock1 = new GreyBlock(world, 14, 2, 3);
         greyBlock2 = new GreyBlock(world, 10, 3, 3);
         redDummy=new Texture("redDummy.png");
         greenDummy=new Texture("greenDummy.png");
@@ -185,31 +185,7 @@ public class GamePlayScreen implements Screen {
         if(!Gdx.input.isTouched() && redBird.getIsDragged()){
 //            Vector2 launchVelocity = new Vector2(catapultposition).sub(redBird.getPosition()).scl(5.0f);
 //            redBird.getBody().setLinearVelocity(launchVelocity);
-//            redBird.launch();
-//            redBird.setIsDragged(false);
-
-            Vector2 launchVector = birdInitialPosition.cpy().sub(redBird.getBody().getPosition());
-//            System.out.println("BirdInitialPosition" + birdInitialPosition);
-//            System.out.println("RedBirdPosition" + redBird.getBody().getPosition());
-//            System.out.println("Launch Vector: " + launchVector);
-            float launchSpeed = Math.min(launchVector.len() * 20.0f, 30.0f);
-            float launchAngle = launchVector.angleRad();
-
-            Vector2 launchVelocity = new Vector2(
-                (float) Math.cos(launchAngle) * launchSpeed,
-                (float) Math.sin(launchAngle) * launchSpeed
-            );
-
-            System.out.println("Launch Velocity: " + launchVelocity);
-            redBird.getBody().setType(BodyDef.BodyType.DynamicBody);
-            redBird.getBody().setLinearVelocity(launchVelocity);
-
-//            redBird.getBody().applyLinearImpulse(
-//                launchVelocity,
-//                redBird.getBody().getWorldCenter(),
-//                true
-//            );
-//            redBird.getBody().applyLinearImpulse(5.2f, 5.2f, redBird.getBody().getPosition().x, redBird.getBody().getPosition().y, true);
+            redBird.launch();
             redBird.setIsDragged(false);
         }
 
@@ -273,13 +249,13 @@ public class GamePlayScreen implements Screen {
 //        redBird.draw(batch, redBird.getTexture());
         yellowBird.draw(batch, yellowBird.getBody().getPosition().x-0.5f, yellowBird.getBody().getPosition().y-0.5f, 1, 1);
         blackBird.draw(batch, blackBird.getBody().getPosition().x-0.5f, blackBird.getBody().getPosition().y-0.5f, 1, 1);
-//        blueBlock1.draw(batch, blueBlock1.getBody().getPosition().x-0.5f, blueBlock1.getBody().getPosition().y-0.5f, 1, 1);
+        blueBlock1.draw(batch, blueBlock1.getBody().getPosition().x-0.5f, blueBlock1.getBody().getPosition().y-0.5f, 1, 1);
         blueBlock2.draw(batch, blueBlock2.getBody().getPosition().x-0.5f, blueBlock2.getBody().getPosition().y-0.5f, 1, 1);
         blueBlock3.draw(batch, blueBlock3.getBody().getPosition().x-0.5f, blueBlock3.getBody().getPosition().y-0.5f, 1, 1);
         brownBlock1.draw(batch, brownBlock1.getBody().getPosition().x-0.5f, brownBlock1.getBody().getPosition().y-0.5f, 1, 1);
-//        brownBlock2.draw(batch, brownBlock2.getBody().getPosition().x-0.5f, brownBlock2.getBody().getPosition().y-0.5f, 1, 1);
-//        brownBlock3.draw(batch, brownBlock3.getBody().getPosition().x-0.5f, brownBlock3.getBody().getPosition().y-0.5f, 1, 1);
-//        greyBlock1.draw(batch, greyBlock1.getBody().getPosition().x-0.5f, greyBlock1.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock2.draw(batch, brownBlock2.getBody().getPosition().x-0.5f, brownBlock2.getBody().getPosition().y-0.5f, 1, 1);
+        brownBlock3.draw(batch, brownBlock3.getBody().getPosition().x-0.5f, brownBlock3.getBody().getPosition().y-0.5f, 1, 1);
+        greyBlock1.draw(batch, greyBlock1.getBody().getPosition().x-0.5f, greyBlock1.getBody().getPosition().y-0.5f, 1, 1);
         greyBlock2.draw(batch, greyBlock2.getBody().getPosition().x-0.5f, greyBlock2.getBody().getPosition().y-0.5f, 1, 1);
         chiefPig.draw(batch, chiefPig.getBody().getPosition().x - 0.5f, chiefPig.getBody().getPosition().y - 0.5f, 1, 1);
         pig.draw(batch, pig.getBody().getPosition().x - 0.5f, pig.getBody().getPosition().y - 0.5f, 1, 1);

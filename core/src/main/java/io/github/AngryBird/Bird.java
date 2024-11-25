@@ -53,10 +53,10 @@ public class Bird {
         velocity.set(launchVelocity.scl(speed));
         launched = true;
     }
-    public void launch()//I will improve the function just to check everything is working or not
+    public void launch()
     {
         body.setType(BodyDef.BodyType.DynamicBody);
-        body.applyLinearImpulse(6f, 6f, body.getPosition().x, body.getPosition().y, true);
+        body.applyLinearImpulse(5.2f, 5.2f, body.getPosition().x, body.getPosition().y, true);
     }
 
     public void draw(SpriteBatch batch, Texture texture){
