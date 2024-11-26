@@ -56,20 +56,20 @@ public class loadScreen implements Screen {
 
         if(touchPosition.x>GAME1_BUTTON_xCOORDINATE&&touchPosition.x<GAME1_BUTTON_xCOORDINATE+GAME1_BUTTON_WIDTH&&touchPosition.y>GAME1_BUTTON_yCOORDINATE&&touchPosition.y<GAME1_BUTTON_yCOORDINATE+GAME1_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-                angryBird.setScreen(new GamePlayScreen(angryBird));
+//                angryBird.setScreen(new GamePlayScreen(angryBird));
             }
         }
 
 
         if(touchPosition.x>GAME2_BUTTON_xCOORDINATE&&touchPosition.x<GAME2_BUTTON_xCOORDINATE+GAME2_BUTTON_WIDTH&&touchPosition.y>GAME2_BUTTON_yCOORDINATE&&touchPosition.y<GAME2_BUTTON_yCOORDINATE+GAME3_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()){
-                angryBird.setScreen(new GamePlayScreen(angryBird));
+//                angryBird.setScreen(new GamePlayScreen(angryBird));
             }
         }
 
         if(touchPosition.x>GAME3_BUTTON_xCOORDINATE&&touchPosition.x<GAME3_BUTTON_xCOORDINATE+GAME3_BUTTON_WIDTH&&touchPosition.y>GAME3_BUTTON_yCOORDINATE&&touchPosition.y<GAME3_BUTTON_yCOORDINATE+GAME3_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-                angryBird.setScreen(new GamePlayScreen(angryBird));
+//                angryBird.setScreen(new GamePlayScreen(angryBird));
             }
         }
         if(touchPosition.x>BACK_BUTTON_xCOORDINATE&&touchPosition.x<BACK_BUTTON_xCOORDINATE+1&&touchPosition.y>BACK_BUTTON_yCOORDINATE&&touchPosition.y<BACK_BUTTON_yCOORDINATE+1)

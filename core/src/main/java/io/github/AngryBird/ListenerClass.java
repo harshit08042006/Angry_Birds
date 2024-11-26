@@ -8,12 +8,20 @@ import java.util.Iterator;
 
 
 public class ListenerClass implements ContactListener {
+    private GamePlayScreen screen;
+    public ListenerClass(GamePlayScreen screen) {
+        this.screen = screen;
+    }
     private boolean isBird(Fixture fixture){
         return fixture.getBody().getUserData() instanceof Bird;
     }
 
     private boolean isPig(Fixture fixture){
         return fixture.getBody().getUserData() instanceof BasePig;
+    }
+    private boolean isGround(Fixture fixture){
+        return fixture.getBody().getUserData() instanceof String;
+
     }
 
     private boolean isBlock(Fixture fixture){
@@ -22,23 +30,36 @@ public class ListenerClass implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+        if(isBird(fixB) && isGround(fixA)){
+            screen.birds.remove((Bird)fixB.getBody().getUserData());
+            screen.bodiesToDestroy.add(fixB.getBody());
+            if(!screen.birds.isEmpty())
+            {
+                screen.bodiesToMove.put(screen.birds.get(0).getBody(), new Vector2(2.7f, 3.7f));//2.9f, 3.5f
+            }
+
+        }
+        if(isPig(fixB) && isGround(fixA)){
+            screen.pigs.remove((BasePig)fixB.getBody().getUserData());
+            screen.bodiesToDestroy.add(fixB.getBody());
+        }
         if (isBird(fixA) && isPig(fixB)) {
             int newHealth=HandlePigHit((BasePig) fixB.getBody().getUserData(), ((Bird)fixA.getBody().getUserData()).getImpact());
             if(newHealth<=0)
             {
-                GamePlayScreen2.bodiesToDestroy.add(fixB.getBody());
+                screen.bodiesToDestroy.add(fixB.getBody());
             }
         }
         else if (isBird(fixA) && isBlock(fixB)) {
             int newDurability=HandleBlockHit((Block) fixB.getBody().getUserData(), ((Bird)fixA.getBody().getUserData()).getImpact());
             System.out.println(newDurability);
             if(newDurability<=0) {
-                ArrayList<Block>blocks=GamePlayScreen2.getBlocks();
-                ArrayList<BasePig> pigs=GamePlayScreen2.getPigs();
+                ArrayList<Block>blocks=screen.blocks;
+                ArrayList<BasePig> pigs=screen.pigs;
                 Vector2 position=fixB.getBody().getPosition();
                 blocks.remove((Block)fixB.getBody().getUserData());
                 System.out.println(blocks);
-                GamePlayScreen2.bodiesToDestroy.add(fixB.getBody());
+                screen.bodiesToDestroy.add(fixB.getBody());
                 int count=1;
                 System.out.println(count);
                 Iterator<Block> iterator = blocks.iterator();
@@ -53,10 +74,10 @@ public class ListenerClass implements ContactListener {
                             System.out.println("hi1");
                             count++;
                             iterator.remove();
-                            GamePlayScreen2.bodiesToDestroy.add(b.getBody());
+                            screen.bodiesToDestroy.add(b.getBody());
                         } else {
                             System.out.println("hello");
-                            GamePlayScreen2.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y-count));
+                            screen.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y-count));
                         }
                     }
                 }
@@ -65,7 +86,7 @@ public class ListenerClass implements ContactListener {
                     BasePig b = iterator1.next();
                     System.out.println(b);
                     if (b.getBody().getPosition().x == position.x && b.getBody().getPosition().y > position.y) {
-                            GamePlayScreen2.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y-count));
+                            screen.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y-count));
                         }
                     }
 

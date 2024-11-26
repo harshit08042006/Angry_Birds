@@ -45,9 +45,6 @@ public class Bird {
         position.set(x, y);
     }
 
-    public Vector2 getPosition(){
-        return position;
-    }
 
     public static void launch(Vector2 launchVelocity){
         velocity.set(launchVelocity.scl(speed));
@@ -59,8 +56,7 @@ public class Bird {
         body.applyLinearImpulse(5.2f, 5.2f, body.getPosition().x, body.getPosition().y, true);
     }
 
-    public void draw(SpriteBatch batch, Texture texture){
-        batch.draw(texture, position.x, position.y, 1, 1);
+    public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {
     }
 
 

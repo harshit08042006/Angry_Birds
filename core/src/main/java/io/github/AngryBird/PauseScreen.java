@@ -53,7 +53,7 @@ public class PauseScreen implements Screen{
 
         if(touchPosition.x>RESUME_GAME_BUTTON_xCOORDINATE&&touchPosition.x<RESUME_GAME_BUTTON_xCOORDINATE+RESUME_GAME_BUTTON_WIDTH&&touchPosition.y>RESUME_GAME_BUTTON_yCOORDINATE&&touchPosition.y<RESUME_GAME_BUTTON_yCOORDINATE+RESUME_GAME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-                angryBird.setScreen(new GamePlayScreen(angryBird));
+//                angryBird.setScreen(new GamePlayScreen(angryBird));
             }
         }
 

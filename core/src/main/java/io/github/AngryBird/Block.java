@@ -1,6 +1,7 @@
 package io.github.AngryBird;
 
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 
 public abstract class Block {
@@ -72,6 +73,8 @@ public abstract class Block {
         durability-=impact;
         return durability;
 
+    }
+    public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {
     }
     public String toString()
     {
