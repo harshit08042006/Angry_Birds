@@ -63,6 +63,7 @@ public class Bird {
         batch.draw(texture, position.x, position.y, 1, 1);
     }
 
+
     public void update_vel(float deltatime){
         if (launched){
             velocity.y = velocity.y - 9.8f*deltatime;
@@ -88,5 +89,6 @@ public class Bird {
     public void dispose(){
         texture.dispose();
     }
-
+    public Texture getTexture(){
+        return texture;}
 }

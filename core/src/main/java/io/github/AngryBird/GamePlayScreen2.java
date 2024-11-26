@@ -22,6 +22,7 @@ import java.util.Map;
 
 
 public class GamePlayScreen2 implements Screen {
+    int current_bird_index;
 
     public static LinkedHashMap<Body, Vector2> bodiesToMove=new LinkedHashMap<>();
     private static ArrayList<Block> blocks=new ArrayList<>();
@@ -31,8 +32,8 @@ public class GamePlayScreen2 implements Screen {
     private Texture background;
     private Texture pause_button;
     private RedBird redBird;
-//    private BlackBird blackBird;
-//    private YellowBird yellowBird;
+    private BlackBird blackBird;
+    private YellowBird yellowBird;
     private Catapult catapult;
     private Pig pig;
     private ChiefPig chiefPig;
@@ -83,6 +84,15 @@ public class GamePlayScreen2 implements Screen {
         groundBox.dispose();
     }
 
+    private boolean allPigsDefeated() {
+        for (BasePig pig : pigs) {
+            if (pig.getHealth() > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public GamePlayScreen2(Main angryBird) {
         world=new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
@@ -111,6 +121,10 @@ public class GamePlayScreen2 implements Screen {
 
 //        greyBlock1 = new GreyBlock(world, 14, 2, 3);
         greyBlock2 = new GreyBlock(world, 14, 3, 3);
+        birds.add(redBird);
+//        birds.add(yellowBird);
+//        birds.add(blackBird);
+
         pigs.add(pig);
         pigs.add(chiefPig);
         pigs.add(kingPig);
@@ -131,6 +145,7 @@ public class GamePlayScreen2 implements Screen {
         catapultposition = new Vector2(2, 2);
         createGroundBody();
         launchMultiplier = 5.0f;
+        current_bird_index = 0;
 
 //        world.setContactListener(new ContactListener(){
 //            @Override
@@ -218,21 +233,21 @@ public class GamePlayScreen2 implements Screen {
         float maxDragDistance=1.5f;
         Vector2 birdInitialPosition=new Vector2(2.2f, 3.2f);
         if (Gdx.input.isTouched()) {
-            if (redBird.getIsDragged() || (touchPosition.dst(birdInitialPosition) < 1.0f)) { // Start dragging if touch is near the bird
-                redBird.setIsDragged(true);
+            if (birds.get(current_bird_index).getIsDragged() || (touchPosition.dst(birdInitialPosition) < 1.0f)) { // Start dragging if touch is near the bird
+                birds.get(current_bird_index).setIsDragged(true);
                 Vector2 dragVector = touchPosition.cpy().sub(birdInitialPosition);
                 if (dragVector.len() > maxDragDistance){
                     dragVector.setLength(maxDragDistance);
                 }
-                Vector2 launchVector = birdInitialPosition.cpy().sub(redBird.getBody().getPosition());
+                Vector2 launchVector = birdInitialPosition.cpy().sub(birds.get(current_bird_index).getBody().getPosition());
                 float launchSpeed = Math.min(launchVector.len() * 20.0f, 30.0f);
                 float launchAngle = launchVector.angleRad();
                 Vector2 launchVelocity = new Vector2(
                     (float) Math.cos(launchAngle) * launchSpeed,
                     (float) Math.sin(launchAngle) * launchSpeed
                 );
-                drawTrajectory(redBird.getPosition(), launchVelocity, 0.05f, 100);
-                redBird.getBody().setTransform(birdInitialPosition.cpy().add(dragVector), 0);
+                drawTrajectory(birds.get(current_bird_index).getPosition(), launchVelocity, 0.05f, 10);
+                birds.get(current_bird_index).getBody().setTransform(birdInitialPosition.cpy().add(dragVector), 0);
             }
         }
 
@@ -247,7 +262,7 @@ public class GamePlayScreen2 implements Screen {
 //            redBird.launch();
 //            redBird.setIsDragged(false);
 
-            Vector2 launchVector = birdInitialPosition.cpy().sub(redBird.getBody().getPosition());
+            Vector2 launchVector = birdInitialPosition.cpy().sub(birds.get(current_bird_index).getBody().getPosition());
 //            System.out.println("BirdInitialPosition" + birdInitialPosition);
 //            System.out.println("RedBirdPosition" + redBird.getBody().getPosition());
 //            System.out.println("Launch Vector: " + launchVector);
@@ -261,8 +276,11 @@ public class GamePlayScreen2 implements Screen {
 
 
 //            System.out.println("Launch Velocity: " + launchVelocity);
-            redBird.getBody().setType(BodyDef.BodyType.DynamicBody);
-            redBird.getBody().setLinearVelocity(launchVelocity);
+//            birds.get(current_bird_index).getBody().setType(BodyDef.BodyType.DynamicBody);
+//            birds.get(current_bird_index).getBody().setLinearVelocity(launchVelocity);
+
+            birds.get(current_bird_index).getBody().setType(BodyDef.BodyType.DynamicBody);
+            birds.get(current_bird_index).getBody().setLinearVelocity(launchVelocity);
 
 //            redBird.getBody().applyLinearImpulse(
 //                launchVelocity,
@@ -270,7 +288,14 @@ public class GamePlayScreen2 implements Screen {
 //                true
 //            );
 //            redBird.getBody().applyLinearImpulse(5.2f, 5.2f, redBird.getBody().getPosition().x, redBird.getBody().getPosition().y, true);
-            redBird.setIsDragged(false);
+            birds.get(current_bird_index).setIsDragged(false);
+//            birds.get(current_bird_index+1).setPosition(birds.get(current_bird_index).getPosition().x, birds.get(current_bird_index).getPosition().y);
+//            if (current_bird_index + 1 < birds.size()) {
+//                current_bird_index++;
+//                birds.get(current_bird_index).setPosition(catapultposition.x, catapultposition.y);
+//            }
+
+//            current_bird_index++;
         }
 
 //        if (redBird.getIsDragged()) {
@@ -319,17 +344,33 @@ public class GamePlayScreen2 implements Screen {
         }
         Vector2 redBirdPosition=redBird.getPosition();
 
+        if (allPigsDefeated()) {
+            angryBird.setScreen(new WinScreen(angryBird));
+            return;
+        }
+
 
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
         batch.begin();
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         catapult.draw(batch, 2, 2, 1.5f, 2);
-        redBird.draw(batch, redBird.getBody().getPosition().x-0.5f, redBird.getBody().getPosition().y-0.5f, 1, 1);
+//        for (Bird bird : birds) {
+//            bird.draw(batch, bird.getTexture());
+//        }
 
 //        redBird.draw(batch, redBird.getTexture());
-//        yellowBird.draw(batch, yellowBird.getBody().getPosition().x-0.5f, yellowBird.getBody().getPosition().y-0.5f, 1, 1);
-//        blackBird.draw(batch, blackBird.getBody().getPosition().x-0.5f, blackBird.getBody().getPosition().y-0.5f, 1, 1);
+
+
+//        for (Bird bird : birds) {
+//            if (bird != null && bird.getBody() != null) { // Ensure bird and its body exist
+//                bird.draw(batch,
+//                    bird.getBody().getPosition().x - 0.5f,
+//                    bird.getBody().getPosition().y - 0.5f,
+//                    1, 1);
+//            }
+//        }
+        redBird.draw(batch, redBird.getBody().getPosition().x-0.5f, redBird.getBody().getPosition().y-0.5f, 1, 1);
 //        blueBlock1.draw(batch, blueBlock1.getBody().getPosition().x-0.5f, blueBlock1.getBody().getPosition().y-0.5f, 1, 1);
         blueBlock2.draw(batch, blueBlock2.getBody().getPosition().x-0.5f, blueBlock2.getBody().getPosition().y-0.5f, 1, 1);
         blueBlock3.draw(batch, blueBlock3.getBody().getPosition().x-0.5f, blueBlock3.getBody().getPosition().y-0.5f, 1, 1);
