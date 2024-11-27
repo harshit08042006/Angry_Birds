@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class RedBird extends Bird {
     private Texture red_texture = new Texture("redBird.png");
     public RedBird(World world, float x, float y) {
-        super(world, x,  y, 1, 1, "redBird.png") ;
+        super(world, x,  y, 2, 1, "redBird.png") ;
     }
 
     public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {

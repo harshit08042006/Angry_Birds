@@ -40,7 +40,6 @@ public class ListenerClass implements ContactListener {
 
         }
         if(isPig(fixB) && isGround(fixA)){
-//            screen.pigs.remove((BasePig)fixB.getBody().getUserData());
             screen.bodiesToDestroy.add(fixB.getBody());
         }
         if (isBird(fixA) && isPig(fixB)) {
@@ -86,7 +85,13 @@ public class ListenerClass implements ContactListener {
                     BasePig b = iterator1.next();
                     System.out.println(b);
                     if (b.getBody().getPosition().x == position.x && b.getBody().getPosition().y > position.y) {
-                            screen.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y-count));
+                            if(b.getBody().getPosition().y-count==2.5f)
+                            {
+                                screen.bodiesToDestroy.add(fixB.getBody());
+                            }
+                            else {
+                                screen.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y - count));
+                            }
                         }
                     }
 
