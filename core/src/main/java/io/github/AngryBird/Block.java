@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import java.io.Serializable;
 
-public abstract class Block implements Serializable {
+public class Block implements Serializable {
     Body body;
     float x;
     float y;
@@ -19,6 +19,10 @@ public abstract class Block implements Serializable {
         this.durability = durability;
         createBlockBody(world, x, y);
         body.setUserData(this);
+    }
+
+    public Block(int durability){
+        this.durability = durability;
     }
     void createBlockBody(World world, float x, float y)
     {

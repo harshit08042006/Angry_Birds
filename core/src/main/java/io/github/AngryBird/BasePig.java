@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import java.io.Serializable;
 
-public abstract class BasePig implements Serializable {
+public class BasePig implements Serializable {
     private int health;
     private float x;
     private float y;
@@ -19,6 +19,10 @@ public abstract class BasePig implements Serializable {
         this.y = y;
         createPigBody(world, x, y);
         body.setUserData(this);
+    }
+
+    public BasePig(int health){
+        this.health = health;
     }
 
     void createPigBody(World world, float x, float y)

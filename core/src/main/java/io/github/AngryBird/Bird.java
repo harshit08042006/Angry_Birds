@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
+import javax.lang.model.element.Name;
 import java.io.Serializable;
 
 public class Bird implements Serializable {
@@ -15,6 +16,7 @@ public class Bird implements Serializable {
     private Texture texture;
     private Body body;
     private boolean isDragged;
+    private String Name;
     public Bird(World world, float x, float y, int impact, float speed, String texturepath) {
         this.position = new Vector2(x, y);
         this.velocity = new Vector2(0, 0);
@@ -26,6 +28,14 @@ public class Bird implements Serializable {
         createBirdBody(world, x, y);
         body.setUserData(this);
     }
+
+    public Bird(){
+        this.Name = "Bird";
+    }
+    public String getName(){
+        return Name;
+    }
+
     void createBirdBody(World world, float x, float y)
     {
         BodyDef bodyDef = new BodyDef();

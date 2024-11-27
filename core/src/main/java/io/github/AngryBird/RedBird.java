@@ -13,6 +13,8 @@ public class RedBird extends Bird {
         super(world, x,  y, 2, 1, "redBird.png") ;
     }
 
+
+
     public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {
             batch.draw(red_texture, x, y, sizeX, sizeY);
         }
