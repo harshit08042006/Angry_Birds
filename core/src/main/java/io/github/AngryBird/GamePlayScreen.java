@@ -300,6 +300,7 @@ public class GamePlayScreen implements Screen {
             blockstate.durability = block.getDurability();
             gameState.BlockStates.add(blockstate);
         }
+        gameState.level = level;
         return gameState;
     }
 
@@ -339,30 +340,15 @@ public class GamePlayScreen implements Screen {
         }
 
         gameState.level = level;
-        if(level ==1) {
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame.dat"))) {
-                out.writeObject(gameState);
-                System.out.println("Game saved successfully!");
-            } catch (IOException e) {
-                System.err.println("Failed to save game: " + e.getMessage());
-            }
+        System.out.println("Current level: " + level);
+        String filename = "savegame" + level + ".dat";
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+            out.writeObject(gameState);
+            System.out.println("Game saved successfully to " + filename + "!");
+        } catch (IOException e) {
+            System.err.println("Failed to save game: " + e.getMessage());
         }
-        else if (level== 2){
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame2.dat"))) {
-                out.writeObject(gameState);
-                System.out.println("Game saved successfully!");
-            } catch (IOException e) {
-                System.err.println("Failed to save game: " + e.getMessage());
-            }
-        }
-        else {
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame3.dat"))) {
-                out.writeObject(gameState);
-                System.out.println("Game saved successfully!");
-            } catch (IOException e) {
-                System.err.println("Failed to save game: " + e.getMessage());
-            }
-        }
+
     }
 
     public void restoreSavedGame(GameState gameState) {
@@ -482,7 +468,7 @@ public class GamePlayScreen implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         shapeRenderer = new ShapeRenderer();
         background = new Texture("angryBirdGameBackground1.jpg");
-
+        this.level = gameState.level;
         launchMultiplier = 5.0f;
 
         listener=new ListenerClass(this);
@@ -522,9 +508,6 @@ public class GamePlayScreen implements Screen {
     @Override
     public void render(float v) {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-            saveCurrentGame(); // Call the save method
-        }
 
 
         for(Map.Entry<Body, Vector2> i: bodiesToMove.entrySet())

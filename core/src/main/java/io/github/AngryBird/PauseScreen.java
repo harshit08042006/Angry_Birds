@@ -59,7 +59,9 @@ public class PauseScreen implements Screen{
         if(gameState.level ==1) {
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame.dat"))) {
                 out.writeObject(gameState);
+                System.out.println("level being saved is" + gameState.level);
                 System.out.println("Game saved successfully!");
+
             } catch (IOException e) {
                 System.err.println("Failed to save game: " + e.getMessage());
             }
@@ -67,6 +69,7 @@ public class PauseScreen implements Screen{
         else if (gameState.level== 2){
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame2.dat"))) {
                 out.writeObject(gameState);
+                System.out.println("level being saved is" + gameState.level);
                 System.out.println("Game saved successfully!");
             } catch (IOException e) {
                 System.err.println("Failed to save game: " + e.getMessage());
@@ -75,6 +78,7 @@ public class PauseScreen implements Screen{
         else {
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame3.dat"))) {
                 out.writeObject(gameState);
+                System.out.println("level being saved is" + gameState.level);
                 System.out.println("Game saved successfully!");
             } catch (IOException e) {
                 System.err.println("Failed to save game: " + e.getMessage());
