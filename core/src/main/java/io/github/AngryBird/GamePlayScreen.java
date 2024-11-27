@@ -74,20 +74,30 @@ public class GamePlayScreen implements Screen {
         blackBird = new BlackBird(world, 0.1f, 2);
         yellowBird = new YellowBird(world, 1, 2);
         catapult = new Catapult();
-        pig = new Pig(world, 1, 14, 3.9f);
-        chiefPig = new ChiefPig(world, 2, 12, 4.9f);
+        pig = new Pig(world, 1, 14, 6.9f);
+        chiefPig = new ChiefPig(world, 2, 12, 5.9f);
 //        kingPig = new KingPig(world, 3, 10, 3.9f);
         blueBlock1 = new BlueBlock(world, 12, 3, 1);
         blueBlock2 = new BlueBlock(world, 12, 4, 1);
-        brownBlock1 = new BrownBlock(world, 14, 3, 2);
+        brownBlock1 = new BrownBlock(world, 12, 5, 2);
+        brownBlock2 = new BrownBlock(world, 14, 6, 2);
+//        brownBlock2 = new BrownBlock(world, 12, 6, 2);
+//        blueBlock2 = new BlueBlock(world, 12, 4, 1);
+        brownBlock3 = new BrownBlock(world, 14, 3, 2);
+        brownBlock4=new BrownBlock(world, 14, 4, 2);
+        blueBlock3=new BlueBlock(world, 14, 5, 1);
 //        greyBlock1 = new GreyBlock(world, 10, 3, 3);
         birds.add(redBird);
         birds.add(yellowBird);
         birds.add(blackBird);
         blocks.add(blueBlock1);
         blocks.add(blueBlock2);
+        blocks.add(blueBlock3);
 //        blocks.add(greyBlock1);
         blocks.add(brownBlock1);
+        blocks.add(brownBlock2);
+        blocks.add(brownBlock3);
+        blocks.add(brownBlock4);
         pigs.add(pig);
         pigs.add(chiefPig);
 //        pigs.add(kingPig);
@@ -102,7 +112,7 @@ public class GamePlayScreen implements Screen {
         createCeiling();
         launchMultiplier = 5.0f;
     }
-    void setUpLevel2()
+    void setUpLevel3()
     {
         world=new World(new Vector2(0, -9.8f), true);
         //world.setContactListener(listener);
@@ -115,19 +125,19 @@ public class GamePlayScreen implements Screen {
         blackBird = new BlackBird(world, 0.1f, 2);
         yellowBird = new YellowBird(world, 1, 2);
         catapult = new Catapult();
-        pig = new Pig(world, 1, 10, 6.9f);
-        chiefPig = new ChiefPig(world, 2, 12, 7.9f);
-        kingPig = new KingPig(world, 3, 14, 3.9f);
+        pig = new Pig(world, 1, 14, 6.9f);
+        chiefPig = new ChiefPig(world, 2, 12, 4.9f);
+        kingPig = new KingPig(world, 3, 10, 3.9f);
         blueBlock1 = new BlueBlock(world, 12, 3, 1);
         blueBlock2 = new BlueBlock(world, 12, 4, 1);
-        blueBlock3 = new BlueBlock(world, 12, 5, 1);
-        blueBlock4 = new BlueBlock(world, 12, 6, 1);
-        blueBlock5 = new BlueBlock(world, 12, 7, 1);
-        brownBlock1 = new BrownBlock(world, 10, 3, 2);
-        brownBlock2 = new BrownBlock(world, 10, 4, 2);
-        brownBlock3 = new BrownBlock(world, 10, 5, 2);
-        brownBlock4 = new BrownBlock(world, 10, 6, 2);
-        greyBlock1 = new GreyBlock(world, 14, 3, 3);
+//        blueBlock3 = new BlueBlock(world, 12, 5, 1);
+//        blueBlock4 = new BlueBlock(world, 12, 6, 1);
+//        blueBlock5 = new BlueBlock(world, 12, 7, 1);
+        brownBlock1 = new BrownBlock(world, 14, 3, 2);
+        brownBlock2 = new BrownBlock(world, 14, 4, 2);
+        brownBlock3 = new BrownBlock(world, 14, 5, 2);
+        brownBlock4 = new BrownBlock(world, 14, 6, 2);
+        greyBlock1 = new GreyBlock(world, 10, 3, 3);
         birds.add(redBird);
         birds.add(yellowBird);
         birds.add(blackBird);
@@ -136,9 +146,9 @@ public class GamePlayScreen implements Screen {
         pigs.add(kingPig);
         blocks.add(blueBlock1);
         blocks.add(blueBlock2);
-        blocks.add(blueBlock3);
-        blocks.add(blueBlock4);
-        blocks.add(blueBlock5);
+//        blocks.add(blueBlock3);
+//        blocks.add(blueBlock4);
+//        blocks.add(blueBlock5);
         blocks.add(brownBlock1);
         blocks.add(brownBlock2);
         blocks.add(brownBlock3);
@@ -156,7 +166,7 @@ public class GamePlayScreen implements Screen {
         launchMultiplier = 5.0f;
         current_bird_index = 0;
     }
-    public void setUpLevel3()
+    public void setUpLevel2()
     {
         world=new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
@@ -168,26 +178,30 @@ public class GamePlayScreen implements Screen {
         blackBird = new BlackBird(world, 0.1f, 2);
         yellowBird = new YellowBird(world, 1, 2);
         catapult = new Catapult();
-        pig = new Pig(world, 1, 14, 3.9f);
-        chiefPig = new ChiefPig(world, 2, 12, 5.9f);
-        kingPig = new KingPig(world, 3, 10, 4.9f);
-        blueBlock1 = new BlueBlock(world, 12, 2, 1);
-        blueBlock2 = new BlueBlock(world, 12, 3, 1);
-        blueBlock3 = new BlueBlock(world, 12, 4, 1);
-        brownBlock1 = new BrownBlock(world, 14, 3, 2);
-        brownBlock2 = new BrownBlock(world, 10, 2, 2);
-        brownBlock3 = new BrownBlock(world, 12, 2, 2);
-        greyBlock1 = new GreyBlock(world, 14, 2, 3);
-        greyBlock2 = new GreyBlock(world, 10, 3, 3);
+        pig = new Pig(world, 1, 10, 4.9f);
+//        chiefPig = new ChiefPig(world, 2, 12, 5.9f);
+        kingPig = new KingPig(world, 3, 14, 6.9f);
+        blueBlock1 = new BlueBlock(world, 12, 4, 1);
+        blueBlock2 = new BlueBlock(world, 12, 5, 1);
+        blueBlock3 = new BlueBlock(world, 14, 5, 1);
+        blueBlock4 = new BlueBlock(world, 14, 6, 1);
+        //blueBlock3 = new BlueBlock(world, 12, 4, 1);
+        brownBlock1 = new BrownBlock(world, 10, 3, 2);
+        brownBlock2 = new BrownBlock(world, 12, 3, 2);
+        brownBlock3 = new BrownBlock(world, 14, 4, 2);
+        greyBlock1 = new GreyBlock(world, 10, 4, 3);
+        greyBlock2 = new GreyBlock(world, 14, 3, 3);
         birds.add(redBird);
         birds.add(yellowBird);
         birds.add(blackBird);
         pigs.add(pig);
-        pigs.add(chiefPig);
+//        pigs.add(chiefPig);
         pigs.add(kingPig);
         blocks.add(blueBlock1);
         blocks.add(blueBlock2);
         blocks.add(blueBlock3);
+        blocks.add(blueBlock4);
+        //blocks.add(blueBlock3);
         blocks.add(brownBlock1);
         blocks.add(brownBlock2);
         blocks.add(brownBlock3);
@@ -473,7 +487,9 @@ public class GamePlayScreen implements Screen {
 
         listener=new ListenerClass(this);
         createGroundBody();
-
+        createCeiling();
+        createLeftWall();
+        createRightWall();
         redDummy=new Texture("redDummy.png");
         greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");

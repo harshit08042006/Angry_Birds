@@ -85,13 +85,7 @@ public class ListenerClass implements ContactListener {
                     BasePig b = iterator1.next();
                     System.out.println(b);
                     if (b.getBody().getPosition().x == position.x && b.getBody().getPosition().y > position.y) {
-                            if(b.getBody().getPosition().y-count==2.5f)
-                            {
-                                screen.bodiesToDestroy.add(fixB.getBody());
-                            }
-                            else {
-                                screen.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y - count));
-                            }
+                            screen.bodiesToMove.put(b.getBody(), new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y - count));
                         }
                     }
 
