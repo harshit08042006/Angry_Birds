@@ -8,6 +8,7 @@ public class BrownBlock extends Block{
     Texture img=new Texture("brownBlock.png");
     public BrownBlock(World world, float x, float y, int durability){
         super(world, x,y,durability);
+        this.BlockType = "BrownBlock";
     }
     public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {
         if(!isCollapsed()) {

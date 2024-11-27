@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.io.Serializable;
+
 public class BlackBird extends Bird {
     private Texture black_texture = new Texture("blackBird.png");
     public BlackBird(World world, float x, float y) {

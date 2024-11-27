@@ -10,6 +10,7 @@ public class Pig extends BasePig{
 
     public Pig(World world, int health, float x, float y) {
         super(world, health, x, y);
+        this.setPigType("Pig");
     }
     public void draw(SpriteBatch batch, float x, float y, float sizeX, float sizeY) {
         if(!isDead()) {

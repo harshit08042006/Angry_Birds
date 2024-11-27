@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 
-public abstract class BasePig {
+import java.io.Serializable;
+
+public abstract class BasePig implements Serializable {
     private int health;
     private float x;
     private float y;
     private Body body;
     private Texture texture;
+    private String PigType;
     public BasePig(World world, int health, float x, float y) {
         this.health = health;
         this.x = x;
@@ -52,6 +55,7 @@ public abstract class BasePig {
         this.y = y;
     }
     public int getHealth() {return health;}
+    public void setHealth(int h ){this.health = h; }
     public float getX() {return x;}
     public float getY() {return y;}
 
@@ -68,4 +72,6 @@ public abstract class BasePig {
     public void dispose() {
         texture.dispose();
     }
+    public void setPigType(String Type){ this.PigType = Type;}
+    public String getPigType(){return PigType;}
 }

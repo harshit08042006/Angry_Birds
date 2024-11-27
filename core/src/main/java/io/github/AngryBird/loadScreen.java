@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 public class loadScreen implements Screen {
     private Main angryBird;
     private Texture Background;
@@ -49,6 +52,16 @@ public class loadScreen implements Screen {
     public void show(){
     }
 
+    public GameState restoreGame(String fileName) {
+        try (FileInputStream fileIn = new FileInputStream(fileName);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            return (GameState) in.readObject();
+        } catch (Exception e) {
+            System.err.println("Failed to restore game: " + e.getMessage());
+            return null;
+        }
+    }
+
     @Override
     public void render(float delta){
         touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
@@ -56,20 +69,39 @@ public class loadScreen implements Screen {
 
         if(touchPosition.x>GAME1_BUTTON_xCOORDINATE&&touchPosition.x<GAME1_BUTTON_xCOORDINATE+GAME1_BUTTON_WIDTH&&touchPosition.y>GAME1_BUTTON_yCOORDINATE&&touchPosition.y<GAME1_BUTTON_yCOORDINATE+GAME1_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-//                angryBird.setScreen(new GamePlayScreen(angryBird));
+                GameState gameState = restoreGame("savegame.dat");
+                if (gameState != null) {
+                    angryBird.setScreen(new GamePlayScreen(angryBird, gameState)); // Switch to GameplayScreen
+                } else {
+                    System.err.println("Failed to load saved game!");
+                }
             }
         }
 
 
         if(touchPosition.x>GAME2_BUTTON_xCOORDINATE&&touchPosition.x<GAME2_BUTTON_xCOORDINATE+GAME2_BUTTON_WIDTH&&touchPosition.y>GAME2_BUTTON_yCOORDINATE&&touchPosition.y<GAME2_BUTTON_yCOORDINATE+GAME3_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()){
-//                angryBird.setScreen(new GamePlayScreen(angryBird));
+                if(Gdx.input.justTouched()) {
+                    GameState gameState = restoreGame("savegame2.dat");
+                    if (gameState != null) {
+                        angryBird.setScreen(new GamePlayScreen(angryBird, gameState)); // Switch to GameplayScreen
+                    } else {
+                        System.err.println("Failed to load saved game!");
+                    }
+                }
             }
         }
 
         if(touchPosition.x>GAME3_BUTTON_xCOORDINATE&&touchPosition.x<GAME3_BUTTON_xCOORDINATE+GAME3_BUTTON_WIDTH&&touchPosition.y>GAME3_BUTTON_yCOORDINATE&&touchPosition.y<GAME3_BUTTON_yCOORDINATE+GAME3_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-//                angryBird.setScreen(new GamePlayScreen(angryBird));
+                if(Gdx.input.justTouched()) {
+                    GameState gameState = restoreGame("savegame3.dat");
+                    if (gameState != null) {
+                        angryBird.setScreen(new GamePlayScreen(angryBird, gameState)); // Switch to GameplayScreen
+                    } else {
+                        System.err.println("Failed to load saved game!");
+                    }
+                }
             }
         }
         if(touchPosition.x>BACK_BUTTON_xCOORDINATE&&touchPosition.x<BACK_BUTTON_xCOORDINATE+1&&touchPosition.y>BACK_BUTTON_yCOORDINATE&&touchPosition.y<BACK_BUTTON_yCOORDINATE+1)

@@ -4,11 +4,14 @@ package io.github.AngryBird;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 
-public abstract class Block {
+import java.io.Serializable;
+
+public abstract class Block implements Serializable {
     Body body;
     float x;
     float y;
     int durability;
+    String BlockType;
 
     public Block(World world, float x, float y, int durability) {
         this.x = x;
@@ -81,5 +84,7 @@ public abstract class Block {
         return body.getPosition().toString();
     }
 
+    public void setBlockType(String Type){ this.BlockType = Type;}
+    public String getBlockType(){return BlockType;}
 
 }

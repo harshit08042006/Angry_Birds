@@ -40,7 +40,7 @@ public class ListenerClass implements ContactListener {
 
         }
         if(isPig(fixB) && isGround(fixA)){
-            screen.pigs.remove((BasePig)fixB.getBody().getUserData());
+//            screen.pigs.remove((BasePig)fixB.getBody().getUserData());
             screen.bodiesToDestroy.add(fixB.getBody());
         }
         if (isBird(fixA) && isPig(fixB)) {

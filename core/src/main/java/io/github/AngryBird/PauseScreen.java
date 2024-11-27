@@ -1,4 +1,5 @@
 package io.github.AngryBird;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -10,6 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 
 public class PauseScreen implements Screen{
     private final Main angryBird;
@@ -20,6 +26,7 @@ public class PauseScreen implements Screen{
     private FitViewport viewport;
     private final SpriteBatch batch;
     private final Vector2 touchPosition;
+    public GameState gamestate;
 
     private static final float RESUME_GAME_BUTTON_WIDTH=4.5f;
     private static final float SAVE_GAME_BUTTON_WIDTH=4.5f;
@@ -34,7 +41,7 @@ public class PauseScreen implements Screen{
     private static final float SAVE_GAME_BUTTON_yCOORDINATE = 3.5f;
     private static final float HOME_GAME_BUTTON_yCOORDINATE = 2;
 
-    public PauseScreen(Main angryBird) {
+    public PauseScreen(Main angryBird, GameState gameState) {
         this.angryBird=angryBird;
         batch=new SpriteBatch();
         viewport=new FitViewport(16, 9);
@@ -43,6 +50,36 @@ public class PauseScreen implements Screen{
         Home_Game_Button=new Texture("home (1).png");
         Resume_Game_Button=new Texture("resume (1).png");
         Save_Game_Button = new Texture("save (1).png");
+        this.gamestate = gameState;
+
+    }
+
+    private void saveCurrentGame(GameState gameState) {
+
+        if(gameState.level ==1) {
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame.dat"))) {
+                out.writeObject(gameState);
+                System.out.println("Game saved successfully!");
+            } catch (IOException e) {
+                System.err.println("Failed to save game: " + e.getMessage());
+            }
+        }
+        else if (gameState.level== 2){
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame2.dat"))) {
+                out.writeObject(gameState);
+                System.out.println("Game saved successfully!");
+            } catch (IOException e) {
+                System.err.println("Failed to save game: " + e.getMessage());
+            }
+        }
+        else {
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame3.dat"))) {
+                out.writeObject(gameState);
+                System.out.println("Game saved successfully!");
+            } catch (IOException e) {
+                System.err.println("Failed to save game: " + e.getMessage());
+            }
+        }
     }
     @Override
     public void show(){}
@@ -53,15 +90,15 @@ public class PauseScreen implements Screen{
 
         if(touchPosition.x>RESUME_GAME_BUTTON_xCOORDINATE&&touchPosition.x<RESUME_GAME_BUTTON_xCOORDINATE+RESUME_GAME_BUTTON_WIDTH&&touchPosition.y>RESUME_GAME_BUTTON_yCOORDINATE&&touchPosition.y<RESUME_GAME_BUTTON_yCOORDINATE+RESUME_GAME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
-//                angryBird.setScreen(new GamePlayScreen(angryBird));
+                angryBird.setScreen(new GamePlayScreen(angryBird, gamestate));
             }
         }
 
-//        if(touchPosition.x>SAVE_GAME_BUTTON_yCOORDINATE &&touchPosition.x<SAVE_GAME_BUTTON_xCOORDINATE+SAVE_GAME_BUTTON_WIDTH&&touchPosition.y>SAVE_GAME_BUTTON_yCOORDINATE&&touchPosition.y<SAVE_GAME_BUTTON_yCOORDINATE+SAVE_GAME_BUTTON_HEIGHT){
-//            if(Gdx.input.justTouched()) {
-//                this.dispose();
-//            }
-//        }
+        if(touchPosition.x>SAVE_GAME_BUTTON_yCOORDINATE &&touchPosition.x<SAVE_GAME_BUTTON_xCOORDINATE+SAVE_GAME_BUTTON_WIDTH&&touchPosition.y>SAVE_GAME_BUTTON_yCOORDINATE&&touchPosition.y<SAVE_GAME_BUTTON_yCOORDINATE+SAVE_GAME_BUTTON_HEIGHT){
+            if(Gdx.input.justTouched()) {
+                saveCurrentGame(gamestate);
+            }
+        }
         if(touchPosition.x>HOME_GAME_BUTTON_xCOORDINATE &&touchPosition.x<HOME_GAME_BUTTON_xCOORDINATE+HOME_GAME_BUTTON_WIDTH&&touchPosition.y>HOME_GAME_BUTTON_yCOORDINATE&&touchPosition.y<HOME_GAME_BUTTON_yCOORDINATE+HOME_GAME_BUTTON_HEIGHT){
             if(Gdx.input.justTouched()) {
                 angryBird.setScreen(new New_Load_GameScreen(angryBird));

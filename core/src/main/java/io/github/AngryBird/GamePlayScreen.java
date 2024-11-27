@@ -1,6 +1,8 @@
 package io.github.AngryBird;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +12,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,6 +61,7 @@ public class GamePlayScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     private Body groundBody;
     private ShapeRenderer shapeRenderer;
+    private int level;
     void setUpLevel1()
     {
         world=new World(new Vector2(0, -9.8f), true);
@@ -227,9 +233,208 @@ public class GamePlayScreen implements Screen {
         return true;
     }
 
+    private GameState saveCurrentGameState() {
+        GameState gameState = new GameState();
+        gameState.BirdStates = new ArrayList<>();
+        gameState.PigStates = new ArrayList<>();
+        gameState.BlockStates = new ArrayList<>();
+
+        for (Bird bird : birds){
+            BirdState birdState = new BirdState();
+            birdState.x = bird.getBody().getPosition().x;
+            birdState.y = bird.getBody().getPosition().y;
+            birdState.velocityX = bird.getBody().getLinearVelocity().x;
+            birdState.velocityY = bird.getBody().getLinearVelocity().y;
+            birdState.impact = bird.getImpact();
+            gameState.BirdStates.add(birdState);
+        }
+
+        for(BasePig pig : pigs){
+            PigState pigstate = new PigState();
+            pigstate.x = pig.getBody().getPosition().x;
+            pigstate.y = pig.getBody().getPosition().y;
+            pigstate.health = pig.getHealth();
+            pigstate.Type = pig.getPigType();
+            gameState.PigStates.add(pigstate);
+        }
+
+        for (Block block : blocks){
+            BlockState blockstate = new BlockState();
+            blockstate.x = block.getBody().getPosition().x;
+            blockstate.y = block.getBody().getPosition().y;
+            blockstate.Type = block.getBlockType();
+            blockstate.durability = block.getDurability();
+            gameState.BlockStates.add(blockstate);
+        }
+
+//        gameState.Birds_Saved = birds;
+//        gameState.Pigs_Saved = pigs;
+//        gameState.currentindex = current_bird_index;
+
+
+        return gameState;
+    }
+
+
+    private void saveCurrentGame() {
+        GameState gameState = new GameState();
+        gameState.BirdStates = new ArrayList<>();
+        gameState.PigStates = new ArrayList<>();
+        gameState.BlockStates = new ArrayList<>();
+
+        for (Bird bird : birds){
+            BirdState birdState = new BirdState();
+            birdState.x = bird.getBody().getPosition().x;
+            birdState.y = bird.getBody().getPosition().y;
+            birdState.velocityX = bird.getBody().getLinearVelocity().x;
+            birdState.velocityY = bird.getBody().getLinearVelocity().y;
+            birdState.impact = bird.getImpact();
+            gameState.BirdStates.add(birdState);
+        }
+
+        for(BasePig pig : pigs){
+            PigState pigstate = new PigState();
+            pigstate.x = pig.getBody().getPosition().x;
+            pigstate.y = pig.getBody().getPosition().y;
+            pigstate.health = pig.getHealth();
+            pigstate.Type = pig.getPigType();
+            gameState.PigStates.add(pigstate);
+        }
+
+        for (Block block : blocks){
+            BlockState blockstate = new BlockState();
+            blockstate.x = block.getBody().getPosition().x;
+            blockstate.y = block.getBody().getPosition().y;
+            blockstate.Type = block.getBlockType();
+            blockstate.durability = block.getDurability();
+            gameState.BlockStates.add(blockstate);
+        }
+
+        gameState.level = level;
+
+//        gameState.Birds_Saved = birds;
+//        gameState.Pigs_Saved = pigs;
+//        gameState.currentindex = current_bird_index;
+
+        if(level ==1) {
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame.dat"))) {
+                out.writeObject(gameState);
+                System.out.println("Game saved successfully!");
+            } catch (IOException e) {
+                System.err.println("Failed to save game: " + e.getMessage());
+            }
+        }
+        else if (level== 2){
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame2.dat"))) {
+                out.writeObject(gameState);
+                System.out.println("Game saved successfully!");
+            } catch (IOException e) {
+                System.err.println("Failed to save game: " + e.getMessage());
+            }
+        }
+        else {
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savegame3.dat"))) {
+                out.writeObject(gameState);
+                System.out.println("Game saved successfully!");
+            } catch (IOException e) {
+                System.err.println("Failed to save game: " + e.getMessage());
+            }
+        }
+    }
+
+    public void restoreSavedGame(GameState gameState) {
+        world.setContactListener(new ListenerClass(this));
+        if (gameState != null) {
+            birds.clear();
+            for (BirdState birdState : gameState.BirdStates) {
+                if (birdState.impact == 1) {
+                    RedBird redBird1 = new RedBird(world, birdState.x, birdState.y);
+                    redBird1.getBody().setTransform(birdState.x, birdState.y, 0);
+                    redBird1.getBody().setLinearVelocity(birdState.velocityX, birdState.velocityY);
+                    birds.add(redBird1);
+                }
+                else if (birdState.impact == 2){
+                    YellowBird yellowBird1 = new YellowBird(world, birdState.x, birdState.y);
+                    yellowBird1.getBody().setTransform(birdState.x, birdState.y, 0);
+                    yellowBird1.getBody().setLinearVelocity(birdState.velocityX, birdState.velocityY);
+                    birds.add(yellowBird1);
+                }
+                else {
+                    BlackBird blackBird1 = new BlackBird(world, birdState.x, birdState.y);
+                    blackBird1.getBody().setTransform(birdState.x, birdState.y, 0);
+                    blackBird1.getBody().setLinearVelocity(birdState.velocityX, birdState.velocityY);
+                    birds.add(blackBird1);
+                }
+            }
+
+
+
+            pigs.clear();
+            for (PigState pigState : gameState.PigStates) {
+                if (pigState.Type.equals("ChiefPig")){
+                    if (pigState.health>0) {
+                        ChiefPig chiefPig1 = new ChiefPig(world, pigState.health, pigState.x, pigState.y);
+                        chiefPig1.getBody().setTransform(pigState.x, pigState.y, 0);
+                        chiefPig1.setHealth(pigState.health);
+                        pigs.add(chiefPig1);
+                    }
+                }
+                else if (pigState.Type.equals("Pig")){
+                    if (pigState.health>0) {
+                        Pig pig1 = new Pig(world, pigState.health, pigState.x, pigState.y);
+                        pig1.getBody().setTransform(pigState.x, pigState.y, 0);
+                        pig1.setHealth(pigState.health);
+                        pigs.add(pig1);
+                    }
+                }
+                else {
+                    if (pigState.health>0) {
+                        KingPig kingPig1 = new KingPig(world, pigState.health, pigState.x, pigState.y);
+                        kingPig1.getBody().setTransform(pigState.x, pigState.y, 0);
+                        kingPig1.setHealth(pigState.health);
+                        pigs.add(kingPig1);
+                    }
+                }
+            }
+
+            blocks.clear();
+            for(BlockState blockstate : gameState.BlockStates){
+                if (blockstate.Type.equals("BlueBlock")) {
+                    if (blockstate.durability>0) {
+                        BlueBlock blueBlock = new BlueBlock(world, blockstate.x, blockstate.y, blockstate.durability);
+                        blueBlock.getBody().setTransform(blockstate.x, blockstate.y, 0);
+                        blocks.add(blueBlock);
+                    }
+                }
+                else if(blockstate.Type.equals("BrownBlock")){
+                    if (blockstate.durability>0) {
+                        BrownBlock brownBlock = new BrownBlock(world, blockstate.x, blockstate.y, blockstate.durability);
+                        brownBlock.getBody().setTransform(blockstate.x, blockstate.y, 0);
+                        blocks.add(brownBlock);
+                    }
+                }
+                else {
+                    if(blockstate.durability>0) {
+                        GreyBlock greyBlock = new GreyBlock(world, blockstate.x, blockstate.y, blockstate.durability);
+                        greyBlock.getBody().setTransform(blockstate.x, blockstate.y, 0);
+                        blocks.add(greyBlock);
+                    }
+                }
+            }
+
+
+        }
+
+        else {
+            System.out.println("Gamestate is null");
+        }
+    }
+
+
     public GamePlayScreen(Main angryBird, int level) {
         listener=new ListenerClass(this);
         this.angryBird=angryBird;
+        this.level = level;
         if(level==1)
         {
             setUpLevel1();
@@ -241,6 +446,34 @@ public class GamePlayScreen implements Screen {
         if(level==3)
         {
             setUpLevel3();
+        }
+    }
+
+    public GamePlayScreen(Main angryBird, GameState gameState){
+        this.angryBird = angryBird;
+        this.world = new World(new Vector2(0, -9.8f), true);
+        this.viewport=new FitViewport(16, 9);
+        this.touchPosition = new Vector2();
+        batch = new SpriteBatch();
+        catapult = new Catapult();
+        debugRenderer = new Box2DDebugRenderer();
+        shapeRenderer = new ShapeRenderer();
+        background = new Texture("angryBirdGameBackground1.jpg");
+
+        launchMultiplier = 5.0f;
+
+        listener=new ListenerClass(this);
+        createGroundBody();
+
+        redDummy=new Texture("redDummy.png");
+        greenDummy=new Texture("greenDummy.png");
+        pause_button = new Texture("pause_button_blue.png");
+        catapultposition = new Vector2(2, 2);
+
+        if (gameState != null) {
+            restoreSavedGame(gameState);
+        } else {
+            angryBird.setScreen(new New_Load_GameScreen(angryBird));
         }
     }
 
@@ -265,12 +498,18 @@ public class GamePlayScreen implements Screen {
     }
     @Override
     public void render(float v) {
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            saveCurrentGame(); // Call the save method
+        }
+
+
         for(Map.Entry<Body, Vector2> i: bodiesToMove.entrySet())
         {
             i.getKey().setTransform(i.getValue().x, i.getValue().y, 0);
         }
         bodiesToMove.clear();
-        if(birds.isEmpty()&&!pigs.isEmpty())
+        if(birds.isEmpty()&& !allPigsDefeated())
         {
             angryBird.setScreen(new LoseScreen(angryBird));
         }
@@ -386,7 +625,8 @@ public class GamePlayScreen implements Screen {
 
         if(touchPosition.x>0.2f&&touchPosition.x<2.2f&&touchPosition.y>7&&touchPosition.y<9){
             if(Gdx.input.justTouched()) {
-                angryBird.setScreen(new PauseScreen(angryBird));
+                GameState gameState1 = saveCurrentGameState();
+                angryBird.setScreen(new PauseScreen(angryBird, gameState1));
             }
         }
 //        Vector2 redBirdPosition=redBird.getPosition();
