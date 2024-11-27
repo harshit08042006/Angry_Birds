@@ -370,13 +370,13 @@ public class GamePlayScreen implements Screen {
         if (gameState != null) {
             birds.clear();
             for (BirdState birdState : gameState.BirdStates) {
-                if (birdState.impact == 1) {
+                if (birdState.impact == 2) {
                     RedBird redBird1 = new RedBird(world, birdState.x, birdState.y);
                     redBird1.getBody().setTransform(birdState.x, birdState.y, 0);
                     redBird1.getBody().setLinearVelocity(birdState.velocityX, birdState.velocityY);
                     birds.add(redBird1);
                 }
-                else if (birdState.impact == 2){
+                else if (birdState.impact == 3){
                     YellowBird yellowBird1 = new YellowBird(world, birdState.x, birdState.y);
                     yellowBird1.getBody().setTransform(birdState.x, birdState.y, 0);
                     yellowBird1.getBody().setLinearVelocity(birdState.velocityX, birdState.velocityY);
