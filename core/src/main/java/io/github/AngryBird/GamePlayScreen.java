@@ -49,8 +49,6 @@ public class GamePlayScreen implements Screen {
     private BrownBlock brownBlock4;
     private GreyBlock greyBlock1;
     private GreyBlock greyBlock2;
-    private Texture redDummy;
-    private Texture greenDummy;
     private Main angryBird;
     private SpriteBatch batch;
     private FitViewport viewport;
@@ -101,8 +99,6 @@ public class GamePlayScreen implements Screen {
         pigs.add(pig);
         pigs.add(chiefPig);
 //        pigs.add(kingPig);
-        redDummy=new Texture("redDummy.png");
-        greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
         touchPosition = new Vector2();
         catapultposition = new Vector2(2, 2);
@@ -154,8 +150,6 @@ public class GamePlayScreen implements Screen {
         blocks.add(brownBlock3);
         blocks.add(brownBlock4);
         blocks.add(greyBlock1);
-        redDummy=new Texture("redDummy.png");
-        greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
         touchPosition = new Vector2();
         catapultposition = new Vector2(2, 2);
@@ -207,8 +201,6 @@ public class GamePlayScreen implements Screen {
         blocks.add(brownBlock3);
         blocks.add(greyBlock1);
         blocks.add(greyBlock2);
-        redDummy=new Texture("redDummy.png");
-        greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
         touchPosition = new Vector2();
         catapultposition = new Vector2(2, 2);
@@ -490,8 +482,6 @@ public class GamePlayScreen implements Screen {
         createCeiling();
         createLeftWall();
         createRightWall();
-        redDummy=new Texture("redDummy.png");
-        greenDummy=new Texture("greenDummy.png");
         pause_button = new Texture("pause_button_blue.png");
         catapultposition = new Vector2(2, 2);
 
@@ -577,16 +567,6 @@ public class GamePlayScreen implements Screen {
         }
 
 
-        if(touchPosition.x>13.8f&&touchPosition.x<14.8f&&touchPosition.y>0.1f&&touchPosition.y<1.1f){
-            if(Gdx.input.isTouched()){
-                angryBird.setScreen(new LoseScreen(angryBird));
-            }
-        }
-        if(touchPosition.x>14.9f&&touchPosition.x<15.9f&&touchPosition.y>0.1f&&touchPosition.y<1.1f){
-            if(Gdx.input.isTouched()){
-                angryBird.setScreen(new WinScreen(angryBird));
-            }
-        }
 
         if(touchPosition.x>0.2f&&touchPosition.x<2.2f&&touchPosition.y>7&&touchPosition.y<9){
             if(Gdx.input.justTouched()) {
@@ -618,8 +598,6 @@ public class GamePlayScreen implements Screen {
             pig.draw(batch, pig.getBody().getPosition().x-0.5f, pig.getBody().getPosition().y-0.5f, 1, 1);
         }
         batch.draw(pause_button, 0.2f, 7, 2, 2);
-        batch.draw(redDummy, 13.8f, 0.1f, 1, 1);
-        batch.draw(greenDummy, 14.9f, 0.1f, 1, 1);
 
         for (Body body : bodiesToDestroy) {
             world.destroyBody(body);
@@ -669,8 +647,6 @@ public class GamePlayScreen implements Screen {
     public void dispose() {
         background.dispose();
         pause_button.dispose();
-        redDummy.dispose();
-        greenDummy.dispose();
 
     }
 }

@@ -13,7 +13,8 @@ class GamePlayScreenTest2 {
 
     @Test
     public void testHealth() {
-        BasePig pig = new BasePig(1);
-        assertEquals(1, pig.getHealth());
+        BasePig pig = new BasePig(5);
+        pig.handlePigHit(3);
+        assertEquals(2, pig.getHealth());
     }
 }
